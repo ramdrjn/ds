@@ -17,6 +17,9 @@ int factorial(int n)
 UTEST(math, factorial_4) {
     int n = 4;
 
+    algo_steps = 0;
+    algo_storage = 0;
+
     EXPECT_EQ(factorial(n), 24);
 
     algo_time_analysis(n, "n");
