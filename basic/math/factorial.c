@@ -2,14 +2,18 @@
 
 int factorial(int n)
 {
-    int fact = 0;
     //n! = n * (n-1) * (n-2) .. * 2
 
-    return fact;
+    if (n==1)
+        return 1;
+
+    return n * factorial(n-1);
 }
 
 void main()
 {
-    int n = 4;
-    info("factorial value of %d is %d", n, factorial(n));
+    int n;
+    info("enter n value:");
+    scanf("%d", &n);
+    info("factorial value of %d is %d \n", n, factorial(n));
 }
