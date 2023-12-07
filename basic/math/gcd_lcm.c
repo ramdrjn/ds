@@ -56,8 +56,8 @@ UTEST(math, gcd_16_4) {
 
     EXPECT_EQ(gcd(n, m), 4);
 
-    algo_time_analysis(n, "log(min(n, m))");
-    algo_space_analysis(n, "log(min(n,m))");
+    algo_time_analysis(n, "log(max(n, m))");
+    algo_space_analysis(n, "log(max(n,m))");
 }
 
 UTEST(math, gcd_4_16) {
@@ -69,8 +69,8 @@ UTEST(math, gcd_4_16) {
 
     EXPECT_EQ(gcd(n, m), 4);
 
-    algo_time_analysis(n, "log(min(n, m))");
-    algo_space_analysis(n, "log(min(n,m))");
+    algo_time_analysis(n, "log(max(n, m))");
+    algo_space_analysis(n, "log(max(n,m))");
 }
 
 UTEST(math, lcm_4_16) {
@@ -82,6 +82,6 @@ UTEST(math, lcm_4_16) {
 
     EXPECT_EQ(lcm(n, m), 16);
 
-    algo_time_analysis(n, "log(min(n, m))");
-    algo_space_analysis(n, "log(min(n,m))");
+    algo_time_analysis(n, "log(max(n, m))");
+    algo_space_analysis(n, "log(max(n,m))");
 }
