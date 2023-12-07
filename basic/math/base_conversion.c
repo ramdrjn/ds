@@ -126,3 +126,5 @@ UTEST(math, base_conversion_16_255)
     algo_time_analysis(n, "n");
     algo_space_analysis(n, "n");
 }
+
+//Is the O(log(n)) rather than O(n)

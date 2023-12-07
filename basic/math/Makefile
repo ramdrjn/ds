@@ -5,4 +5,4 @@ out.bin: $(src) $(INC_DIR)/utest/utest_main.c
 
 .Phony: clean
 clean:
-	rm *.o out.bin
+	rm out.bin
