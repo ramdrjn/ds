@@ -1,14 +1,19 @@
 #include "utest/utest.h"
 #include "algo_analysis.h"
+#include <stdbool.h>
 
 void bubblesort(int *n, int num_elements)
 {
     //compare two adjascent elements and check if they need to be
     //swapped.
 
+    //optimization 1. Break from outer loop if no swapping has occurred.
+    //Optimizes the best case performance.
+
     int loop_count = 0;
     int swap_count = 0;
     int temp;
+    bool swap_done = false;
 
     //temp variable is the only storage required. In place swap of elements.
     algo_storage++;
@@ -19,10 +24,12 @@ void bubblesort(int *n, int num_elements)
         //Loop from 1 to num_elements-j.
         for (int j = 0; j<num_elements-1-i; j++)
         {
+            swap_done=false;
             loop_count++;
             algo_steps++;
             if(n[j] > n[j+1])
             {
+                swap_done=true;
                 algo_steps +=3;
                 swap_count++;
                 //swap
@@ -32,6 +39,8 @@ void bubblesort(int *n, int num_elements)
             }
             //else no need to swap
         }
+        if (!swap_done)
+            break;
     }
     dbg("loop count %d", loop_count);
     dbg("swap count %d", swap_count);
@@ -49,7 +58,7 @@ UTEST(math, bbsort_bestcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n"); //with optimization 1
     algo_space_analysis(num_elements, "n");
 }
 
@@ -65,7 +74,7 @@ UTEST(math, bbsort_bestcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n"); //with optimization 1
     algo_space_analysis(num_elements, "n");
 }
 
@@ -81,8 +90,8 @@ UTEST(math, bbsort_worstcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
-    algo_space_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "n^2");
 }
 
 UTEST(math, bbsort_worstcase_10) {
@@ -97,8 +106,8 @@ UTEST(math, bbsort_worstcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
-    algo_space_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "n^2");
 }
 
 UTEST(math, bbsort_averagecase) {
@@ -113,8 +122,8 @@ UTEST(math, bbsort_averagecase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
-    algo_space_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "n^2");
 }
 
 UTEST(math, bbsort_averagecase_10) {
@@ -129,14 +138,15 @@ UTEST(math, bbsort_averagecase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
-    algo_space_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "n^2");
 }
 
 //example run
 /*
 
 best case: 1,2,3,4,5
+Linear time
 
 outer_loop 1:
   inner_loop 1:
@@ -151,6 +161,7 @@ outer_loop 1:
   inner_loop 4:
     4<5:                no swap
     1,2,3,4,5
+                      << with optimization 1 the loop breaks out >>
 outer_loop 2:
   inner_loop 1:
     1<2:                no swap
@@ -178,6 +189,7 @@ total inner loops: 10
 total swap: 0
 
 worst case: 5,4,3,2,1
+Quadratic time
 
 outer_loop 1:
   inner_loop 1:
