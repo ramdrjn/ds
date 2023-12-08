@@ -59,7 +59,7 @@ UTEST(math, bbsort_bestcase) {
         EXPECT_EQ(n[i], i+1);
 
     algo_time_analysis(num_elements, "n"); //with optimization 1
-    algo_space_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "1");
 }
 
 UTEST(math, bbsort_bestcase_10) {
@@ -75,7 +75,7 @@ UTEST(math, bbsort_bestcase_10) {
         EXPECT_EQ(n[i], i+1);
 
     algo_time_analysis(num_elements, "n"); //with optimization 1
-    algo_space_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "1");
 }
 
 UTEST(math, bbsort_worstcase) {
@@ -91,7 +91,7 @@ UTEST(math, bbsort_worstcase) {
         EXPECT_EQ(n[i], i+1);
 
     algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
 }
 
 UTEST(math, bbsort_worstcase_10) {
@@ -107,7 +107,7 @@ UTEST(math, bbsort_worstcase_10) {
         EXPECT_EQ(n[i], i+1);
 
     algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
 }
 
 UTEST(math, bbsort_averagecase) {
@@ -123,7 +123,7 @@ UTEST(math, bbsort_averagecase) {
         EXPECT_EQ(n[i], i+1);
 
     algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
 }
 
 UTEST(math, bbsort_averagecase_10) {
@@ -139,7 +139,7 @@ UTEST(math, bbsort_averagecase_10) {
         EXPECT_EQ(n[i], i+1);
 
     algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
 }
 
 //example run
