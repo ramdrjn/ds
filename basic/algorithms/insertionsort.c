@@ -3,8 +3,8 @@
 
 void insertionsort(int *n, int num_elements)
 {
-    //compare two adjascent elements and check if they need to be
-    //swapped.
+    //compare inserted elementand previous and check if they need to be
+    //swapped. If yes then shift right and swap.
 
     int loop_count = 0;
     int swap_count = 0;
@@ -16,7 +16,7 @@ void insertionsort(int *n, int num_elements)
     //Loop from 2nd element to num_elements.
     for(int i = 1; i<num_elements; i++)
     {
-        //Loop from 1 to num_elements-j.
+        //Loop from ith element to 0th element. Loop backwards.
         for (int j = i; j; j--)
         {
             loop_count++;
@@ -25,7 +25,7 @@ void insertionsort(int *n, int num_elements)
             {
                 algo_steps +=3;
                 swap_count++;
-                //swap
+                //swap and shift
                 temp = n[j];
                 n[j]=n[j-1];
                 n[j-1]=temp;
