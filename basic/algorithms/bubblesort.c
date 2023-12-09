@@ -21,10 +21,10 @@ void bubblesort(int *n, int num_elements)
     //Loop from 1 to num_elements.
     for(int i = 0; i<num_elements-1; i++)
     {
+        swap_done=false;
         //Loop from 1 to num_elements-j.
         for (int j = 0; j<num_elements-1-i; j++)
         {
-            swap_done=false;
             loop_count++;
             algo_steps++;
             if(n[j] > n[j+1])
@@ -40,10 +40,8 @@ void bubblesort(int *n, int num_elements)
             //else no need to swap
         }
 
-
-        //optimization disabled since stable case fails
-        //if (!swap_done)
-        //break;
+        if (!swap_done)
+            break;
     }
     dbg("loop count %d", loop_count);
     dbg("swap count %d", swap_count);
