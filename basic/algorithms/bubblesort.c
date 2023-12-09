@@ -39,8 +39,11 @@ void bubblesort(int *n, int num_elements)
             }
             //else no need to swap
         }
-        if (!swap_done)
-            break;
+
+
+        //optimization disabled since stable case fails
+        //if (!swap_done)
+        //break;
     }
     dbg("loop count %d", loop_count);
     dbg("swap count %d", swap_count);
