@@ -15,11 +15,23 @@ void merge(int *n, int l, int m, int r)
 
     algo_storage += n1+n2;
 
+    /* dbg("before n values l %d, m %d, r %d n1 %d n2 %d\n", l, m, r, n1, n2); */
+    /* for (int i = 0; i < 5; i++) */
+    /*     printf("%d", n[i]); */
+
     // Copy data to temp arrays L[] and R[]
+//    dbg("L[i]=");
     for (i = 0; i < n1; i++)
+    {
         L[i] = n[l + i];
+//        printf("%d", L[i]);
+    }
+//    dbg("R[j]=");
     for (j = 0; j < n2; j++)
+    {
         R[j] = n[m + 1 + j];
+//        printf("%d", R[j]);
+    }
 
     // Merge the temp arrays back into arr[l..r
     i = 0;
@@ -56,6 +68,10 @@ void merge(int *n, int l, int m, int r)
 
         n[k++] = R[j++];
     }
+
+    /* dbg("after n values "); */
+    /* for (int i = 0; i < 5; i++) */
+    /*     printf("%d", n[i]); */
 }
 
 void mergesort(int *n, int l, int r)
@@ -79,7 +95,7 @@ UTEST(math, mergesort_bestcase) {
     algo_steps = 0;
     algo_storage = 0;
 
-    mergesort(n, 0, num_elements);
+    mergesort(n, 0, num_elements-1);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -95,7 +111,7 @@ UTEST(math, mergesort_bestcase_10) {
     algo_steps = 0;
     algo_storage = 0;
 
-    mergesort(n, 0, num_elements);
+    mergesort(n, 0, num_elements-1);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -111,7 +127,7 @@ UTEST(math, mergesort_worstcase) {
     algo_steps = 0;
     algo_storage = 0;
 
-    mergesort(n, 0, num_elements);
+    mergesort(n, 0, num_elements-1);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -127,7 +143,7 @@ UTEST(math, mergesort_worstcase_10) {
     algo_steps = 0;
     algo_storage = 0;
 
-    mergesort(n, 0, num_elements);
+    mergesort(n, 0, num_elements-1);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -143,7 +159,7 @@ UTEST(math, mergesort_averagecase) {
     algo_steps = 0;
     algo_storage = 0;
 
-    mergesort(n, 0, num_elements);
+    mergesort(n, 0, num_elements-1);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -159,7 +175,7 @@ UTEST(math, mergesort_averagecase_10) {
     algo_steps = 0;
     algo_storage = 0;
 
-    mergesort(n, 0, num_elements);
+    mergesort(n, 0, num_elements-1);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -170,4 +186,49 @@ UTEST(math, mergesort_averagecase_10) {
 
 //example run
 /*
- */
+initial: 5,2,4,1,3
+cond:i=0<n1 && j=0<n2
+
+DBG: before n values l 0, m 0, r 1 n1 1 n2 1
+52413   -> 5|2
+0<1 && 0 <1
+k=l=0
+n[0]=2  i=1
+------
+n[1]=5  j=1
+DBG: after n values 25413
+
+DBG: before n values l 0, m 1, r 2 n1 2 n2 1
+25413 -> 2,5|4
+0<2 && 0<1
+k=l=0
+n[0]=2  i=1
+k=1
+n[1]=4  j=1
+-------
+n[2]=5  i=2
+DBG: after n values 24513
+
+DBG: before n values l 3, m 3, r 4 n1 1 n2 1
+24513 -> 1|3
+0<1 && 0<1
+k=l=3
+n[3]=1  i=1
+------
+n[4]=3 j=1
+DBG: after n values 24513
+
+DBG: before n values l 0, m 2, r 4 n1 3 n2 2
+24513 -> 2,4,5|1,3
+0<3 && 0<2
+k=l=0
+n[0]=1  j=1
+k=1
+n[1]=1 i=1
+k=2
+n[2]=3 j=2
+------
+n[3]=4
+n[4]=5
+DBG: after n values 12345
+*/
