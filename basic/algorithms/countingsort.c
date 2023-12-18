@@ -1,78 +1,65 @@
 #include "utest/utest.h"
 #include "algo_analysis.h"
 
-void quicksort(int *n, int l, int r)
+void countingsort(int *n, int range_lower, int range_upper, int num_elements)
 {
-    //select a pivot element (last element in this case) and move
-    //elements in list to left side if the elements are less than the pivot
-    //and to right side if the values are greater than the pivot.
-    //Split the list at ith position and then recursively call quick sort
-    //on the two halves.
-    int i = l;
-    int j = r-1;
-    int pivot = r;
-    int temp;
+    //Count the occurances of the values and update that in their
+    //corresponding index in the counting array.
+    //Once all the element's count values are updated, recreate the list
+    //based on the count values.
+
     int loop_count = 0;
     int swap_count = 0;
 
-    if (l >= r)
-    {
-        return;
-    }
+    int counter[range_upper-range_lower+1];
+    int index_adjust=range_lower;
+    int index=0;
 
     //temp variable is the only storage required. In place swap of elements.
-    algo_storage++;
+    algo_storage += sizeof(counter);
 
-    while (i < j)
+    memset(counter, 0, sizeof(counter));
+
+    //Loop from 1 to num_elements.
+    for(int i = 0; i<num_elements; i++)
     {
         loop_count++;
         algo_steps++;
 
-        while(i < pivot && n[i]<=n[pivot])
-        {
-            loop_count++;
-            algo_steps++;
-            i++;
-        }
-        while(j > l && n[j]>=n[pivot])
-        {
-            loop_count++;
-            algo_steps++;
-            j--;
-        }
-        if(i<j)
-        {
-            algo_steps +=3;
-            swap_count++;
-            temp=n[j];
-            n[j]=n[i];
-            n[i]=temp;
-        }
+        index=n[i]-index_adjust;
+        counter[index] += 1;
     }
-    if (n[i] > n[pivot])
-    {
-        algo_steps +=3;
-        swap_count++;
-        temp=n[pivot];
-        n[pivot]=n[i];
-        n[i]=temp;
-    }
-    // Sort first and second halves
-    quicksort(n, l, i - 1);
-    quicksort(n, i + 1, r);
+    //for (int i = 0; i < range_upper-range_lower+1; i++)
+    //    printf("%d ",counter[i]);
 
-    //dbg("loop count %d", loop_count);
-    //dbg("swap count %d", swap_count);
+    //Recreate array but with sorted elements
+    for(int i = 0, index=0; index<num_elements;i++)
+    {
+        loop_count++;
+        algo_steps++;
+
+        for(int j=0; j<counter[i]; j++)
+        {
+            loop_count++;
+            algo_steps++;
+
+            n[index]=i+index_adjust;
+            index++;
+        }
+    }
+
+    dbg("loop count %d", loop_count);
+    dbg("swap count %d", swap_count);
 }
 
-UTEST(math, quicksort_bestcase) {
+UTEST(math, csort_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    quicksort(n, 0, num_elements-1);
+    countingsort(n, 1, 5, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -81,14 +68,14 @@ UTEST(math, quicksort_bestcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, quicksort_bestcase_10) {
+UTEST(math, csort_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    quicksort(n, 0, num_elements-1);
+    countingsort(n, 1, 10, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -97,14 +84,14 @@ UTEST(math, quicksort_bestcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, quicksort_worstcase) {
+UTEST(math, csort_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    quicksort(n, 0, num_elements-1);
+    countingsort(n, 1, 5, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -113,14 +100,14 @@ UTEST(math, quicksort_worstcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, quicksort_worstcase_10) {
+UTEST(math, csort_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    quicksort(n, 0, num_elements-1);
+    countingsort(n, 1, 10, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -129,14 +116,14 @@ UTEST(math, quicksort_worstcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, quicksort_averagecase) {
+UTEST(math, csort_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    quicksort(n, 0, num_elements-1);
+    countingsort(n, 1, 5, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -145,17 +132,34 @@ UTEST(math, quicksort_averagecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, quicksort_averagecase_10) {
+UTEST(math, csort_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    quicksort(n, 0, num_elements-1);
+    countingsort(n, 1, 10, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, csort_stablecase) {
+    int num_elements = 10;
+    int n[10] = {6,4,7,1,7,2,3,9,5,8};
+    int r[10] = {1,2,3,4,5,6,7,7,8,9};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    countingsort(n, 1, 9, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
 
     algo_time_analysis(num_elements, "n^2");
     algo_space_analysis(num_elements, "1");
@@ -163,5 +167,4 @@ UTEST(math, quicksort_averagecase_10) {
 
 //example run
 /*
-initial: 5,2,4,1,3
 */
