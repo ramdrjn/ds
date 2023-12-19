@@ -166,6 +166,23 @@ UTEST(math, ssort_max_stablecase) {
     algo_space_analysis(num_elements, "1");
 }
 
+UTEST(math, ssort_max_randomcase) {
+    int num_elements = 10;
+    int n[10] = {583,31,6,244,4767,322,46,689,765,238};
+    int r[10] = {6,31,46,238,244,322,583,689,765,4767};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmax(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
 //example run
 /*
 
@@ -403,6 +420,23 @@ UTEST(math, ssort_min_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_randomcase) {
+    int num_elements = 10;
+    int n[10] = {583,31,6,244,4767,322,46,689,765,238};
+    int r[10] = {6,31,46,238,244,322,583,689,765,4767};
 
     algo_steps = 0;
     algo_storage = 0;

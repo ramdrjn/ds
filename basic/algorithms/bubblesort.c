@@ -161,6 +161,23 @@ UTEST(math, bbsort_stablecase) {
     algo_space_analysis(num_elements, "1");
 }
 
+UTEST(math, bbsort_randomcase) {
+    int num_elements = 10;
+    int n[10] = {583,31,6,244,4767,322,46,689,765,238};
+    int r[10] = {6,31,46,238,244,322,583,689,765,4767};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    bubblesort(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
 //example run
 /*
 
