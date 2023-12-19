@@ -22,14 +22,12 @@ void bubblesort(int *n, int num_elements)
     for(int i = 0; i<num_elements-1; i++)
     {
         swap_done=false;
-        //Loop from 1 to num_elements-j.
-        for (int j = 0; j<num_elements-1-i; j++)
+        //Loop from 1 to num_elements-j. Only swap if the n[j] is greater than
+        //next element.
+        for (int j = 0; j<num_elements-1-i && (n[j] > n[j+1]); j++)
         {
-            loop_count++;
-            algo_steps++;
-            if(n[j] > n[j+1])
-            {
                 swap_done=true;
+                loop_count++;
                 algo_steps +=3;
                 swap_count++;
                 //swap
