@@ -1,7 +1,7 @@
 #include "utest/utest.h"
 #include "algo_analysis.h"
 
-void selectionsort(int *n, int num_elements)
+void selectionsortmax(int *n, int num_elements)
 {
     //On every loop iteration move the largest values to the end
 
@@ -14,14 +14,12 @@ void selectionsort(int *n, int num_elements)
     //temp variable is the only storage required. In place swap of elements.
     algo_storage++;
 
-    num_elements--;
-
     //Loop from 1 to num_elements.
-    for(int i = 0; i<num_elements; i++)
+    for(int i = 0; i<num_elements-1; i++)
     {
         max_value_index = 0;
-        temp_index=num_elements-i;
-        //Loop from 0th element till num_elements -i
+        temp_index=num_elements-i-1;
+        //Loop from 1st element till num_elements - i -1
         for (int j = 1; j<=temp_index; j++)
         {
             loop_count++;
@@ -55,46 +53,46 @@ void selectionsort(int *n, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, ssort_bestcase) {
+UTEST(math, ssort_max_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n^2");
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_bestcase_10) {
+UTEST(math, ssort_max_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "n^2");
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_worstcase) {
+UTEST(math, ssort_max_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -103,14 +101,14 @@ UTEST(math, ssort_worstcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_worstcase_10) {
+UTEST(math, ssort_max_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -119,14 +117,14 @@ UTEST(math, ssort_worstcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_averagecase) {
+UTEST(math, ssort_max_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -135,14 +133,14 @@ UTEST(math, ssort_averagecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_averagecase_10) {
+UTEST(math, ssort_max_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
@@ -151,7 +149,7 @@ UTEST(math, ssort_averagecase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_stablecase) {
+UTEST(math, ssort_max_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -159,7 +157,7 @@ UTEST(math, ssort_stablecase) {
     algo_steps = 0;
     algo_storage = 0;
 
-    selectionsort(n, num_elements);
+    selectionsortmax(n, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], r[i]);
@@ -259,3 +257,161 @@ total outer loops: 4 i.e num elements -1
 total inner loops: 10
 total swap: 2
 */
+
+//Selection based on minimum value
+void selectionsortmin(int *n, int num_elements)
+{
+    //On every loop iteration move the minimum value to the front
+
+    int loop_count = 0;
+    int swap_count = 0;
+    int temp;
+    int min_value_index;
+
+    //temp variable is the only storage required. In place swap of elements.
+    algo_storage++;
+
+    //Loop from 0 to num_elements.
+    for(int i = 0; i<num_elements-1; i++)
+    {
+        min_value_index = i;
+
+        //loop from element next to the min to num_elements.
+        for (int j = i+1; j<num_elements; j++)
+        {
+            loop_count++;
+            algo_steps++;
+            if(n[j] < n[min_value_index])
+            {
+                algo_steps++;
+                min_value_index=j;
+            }
+            //else no need to update min_value_index
+        }
+
+        if (min_value_index > i)
+        {
+            algo_steps +=3;
+            swap_count++;
+            //swap
+            temp = n[i];
+            n[i]=n[min_value_index];
+            n[min_value_index]=temp;
+        }
+    }
+    dbg("loop count %d", loop_count);
+    dbg("swap count %d", swap_count);
+}
+
+UTEST(math, ssort_min_bestcase) {
+    int num_elements = 5;
+    int n[5] = {1,2,3,4,5};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_bestcase_10) {
+    int num_elements = 10;
+    int n[10] = {1,2,3,4,5,6,7,8,9,10};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_worstcase) {
+    int num_elements = 5;
+    int n[5] = {5,4,3,2,1};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_worstcase_10) {
+    int num_elements = 10;
+    int n[10] = {10,9,8,7,6,5,4,3,2,1};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_averagecase) {
+    int num_elements = 5;
+    int n[5] = {3,4,1,5,2};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_averagecase_10) {
+    int num_elements = 10;
+    int n[10] = {3,4,1,5,2,8,10,9,7,6};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], i+1);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, ssort_min_stablecase) {
+    int num_elements = 10;
+    int n[10] = {6,4,7,1,7,2,3,9,5,8};
+    int r[10] = {1,2,3,4,5,6,7,7,8,9};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    selectionsortmin(n, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
