@@ -76,6 +76,7 @@ void merge(int *n, int l, int m, int r)
 
 void mergesort(int *n, int l, int r)
 {
+    //atleast two elements are present in the list
     if (l < r)
     {
         int m = (l + r) / 2;
@@ -100,8 +101,8 @@ UTEST(math, mergesort_bestcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
-    algo_space_analysis(num_elements, "1");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
 }
 
 UTEST(math, mergesort_bestcase_10) {
@@ -116,8 +117,8 @@ UTEST(math, mergesort_bestcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
-    algo_space_analysis(num_elements, "1");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
 }
 
 UTEST(math, mergesort_worstcase) {
@@ -132,8 +133,8 @@ UTEST(math, mergesort_worstcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "1");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
 }
 
 UTEST(math, mergesort_worstcase_10) {
@@ -148,8 +149,8 @@ UTEST(math, mergesort_worstcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "1");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
 }
 
 UTEST(math, mergesort_averagecase) {
@@ -164,8 +165,8 @@ UTEST(math, mergesort_averagecase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "1");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
 }
 
 UTEST(math, mergesort_averagecase_10) {
@@ -180,9 +181,67 @@ UTEST(math, mergesort_averagecase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
-    algo_space_analysis(num_elements, "1");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
 }
+
+UTEST(math, mergesort_stablecase) {
+    int num_elements = 10;
+    int n[10] = {6,4,7,1,7,2,3,9,5,8};
+    int r[10] = {1,2,3,4,5,6,7,7,8,9};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    mergesort(n, 0, num_elements-1);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
+}
+
+UTEST(math, mergesort_randomcase) {
+    int num_elements = 10;
+    int n[10] = {583,31,6,244,4767,322,46,689,765,238};
+    int r[10] = {6,31,46,238,244,322,583,689,765,4767};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    mergesort(n, 0, num_elements-1);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "m+n");
+}
+
+//Theoritical run
+/*
+Recursive call tree
+Division:
+                                                         ms(0,4)
+                                                 |---------|------------|
+                                               ms(0,2)   ms(3,4)   merge(0,2,4)
+                          |---------|------------|         |       /
+                        ms(0,1)   ms(2,2)   merge(0,1,2)   |      |
+   |---------|------------|                 |              |      |
+ ms(0,0)   ms(1,1)   merge(0,0,1)           |    |---------|------|-----|
+                         |                  |  ms(3,3)   ms(4,4)  |merge(3,3,4)
+                         |                  |                     |     |
+                         |                  |                     |     |
+Merging:                 |                  |                     |     |
+                         |                  |                     |     |
+                    merge(0,1)              |                     |     |
+                         |-------------merge([0,1],2)             |     |
+                                            |                     |     |
+                                            |                     | merge(3,4)
+                                            |                     |      |
+                                            |--------------merge([0,1,2],[3,4])
+*/
 
 //example run
 /*
