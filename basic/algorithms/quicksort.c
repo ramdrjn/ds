@@ -8,8 +8,10 @@ void quicksort(int *n, int l, int r)
     //and to right side if the values are greater than the pivot.
     //Split the list at ith position and then recursively call quick sort
     //on the two halves.
+    //Equal values can be either side and hence is not stable
+    //also called as partition exchange swap algorithm
     int i = l;
-    int j = r-1;
+    int j = r-1; //-1 makes sense here since we do not want to compare the pivot element
     int pivot = r;
     int temp;
     int loop_count = 0;
@@ -34,12 +36,13 @@ void quicksort(int *n, int l, int r)
             algo_steps++;
             i++;
         }
-        while(j > l && n[j]>=n[pivot])
+        while(j > l && n[j]>n[pivot]) //is > only or is >= ?
         {
             loop_count++;
             algo_steps++;
             j--;
         }
+        //found elements that are less than and greater than pivot. swap.
         if(i<j)
         {
             algo_steps +=3;
@@ -47,8 +50,14 @@ void quicksort(int *n, int l, int r)
             temp=n[j];
             n[j]=n[i];
             n[i]=temp;
+            //i and j have not to be incremented here.
+            //Continue in next iteration from same values of i and j
         }
+        //continue after swap here until i is still less than j
     }
+    //i is not less than j i.e either i is equal to j or i is greater than j
+    //determine if the swap is required and then swap.
+    //swap i and pivot element.
     if (n[i] > n[pivot])
     {
         algo_steps +=3;
@@ -57,7 +66,8 @@ void quicksort(int *n, int l, int r)
         n[pivot]=n[i];
         n[i]=temp;
     }
-    // Sort first and second halves
+    // Sort first and second halves. Division based on ith index value.
+    //ith position contains the pivot element.
     quicksort(n, l, i - 1);
     quicksort(n, i + 1, r);
 
@@ -77,7 +87,7 @@ UTEST(math, quicksort_bestcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "nlog(n)");
     algo_space_analysis(num_elements, "1");
 }
 
@@ -93,7 +103,7 @@ UTEST(math, quicksort_bestcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n");
+    algo_time_analysis(num_elements, "nlog(n)");
     algo_space_analysis(num_elements, "1");
 }
 
@@ -141,7 +151,7 @@ UTEST(math, quicksort_averagecase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
+    algo_time_analysis(num_elements, "nlog(n)");
     algo_space_analysis(num_elements, "1");
 }
 
@@ -157,7 +167,28 @@ UTEST(math, quicksort_averagecase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
+    algo_time_analysis(num_elements, "nlog(n)");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, quicksort_stablecase) {
+    UTEST_SKIP("Quicksort is not a stable sort");
+}
+
+UTEST(math, quicksort_randomcase) {
+    int num_elements = 10;
+    int n[10] = {583,31,6,244,4767,322,46,689,765,238};
+    int r[10] = {6,31,46,238,244,322,583,689,765,4767};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    quicksort(n, 0, num_elements-1);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "nlog(n)");
     algo_space_analysis(num_elements, "1");
 }
 
