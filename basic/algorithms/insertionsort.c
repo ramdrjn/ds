@@ -1,6 +1,42 @@
 #include "utest/utest.h"
 #include "algo_analysis.h"
 
+void standard_insertionsort(int *n, int num_elements)
+{
+    //compare inserted elementand previous and check if they need to be
+    //swapped. If yes then shift right and swap.
+
+    int loop_count = 0;
+    int swap_count = 0;
+    int temp, j;
+
+    //temp variable is the only storage required. In place swap of elements.
+    algo_storage++;
+
+    //Loop from 2nd element to num_elements.
+    for(int i = 1; i<num_elements; i++)
+    {
+        //select the ith position for the comparison.
+        //i is the start of the unsorted list.
+        //i-1(j) is there for the end of sorted list.
+        temp = n[i];
+        //Loop from jth element to 0th element. Loop backwards.
+        j = i-1;
+        while (j >= 0 && n[j] > temp)
+        {
+            loop_count++;
+            algo_steps++;
+            swap_count++;
+            //swap and shift
+            n[j+1]=n[j];
+            j--;
+        }
+        n[j+1]=temp;
+    }
+    dbg("loop count %d", loop_count);
+    dbg("swap count %d", swap_count);
+}
+
 void insertionsort(int *n, int num_elements)
 {
     //compare inserted elementand previous and check if they need to be
@@ -49,42 +85,6 @@ void insertionsort(int *n, int num_elements)
             n[j-1]=temp;
         }
     }
-}
-
-void standard_insertionsort(int *n, int num_elements)
-{
-    //compare inserted elementand previous and check if they need to be
-    //swapped. If yes then shift right and swap.
-
-    int loop_count = 0;
-    int swap_count = 0;
-    int temp, j;
-
-    //temp variable is the only storage required. In place swap of elements.
-    algo_storage++;
-
-    //Loop from 2nd element to num_elements.
-    for(int i = 1; i<num_elements; i++)
-    {
-        //select the ith position for the comparison.
-        //i is the start of the unsorted list.
-        //i-1(j) is there for the end of sorted list.
-        temp = n[i];
-        //Loop from jth element to 0th element. Loop backwards.
-        j = i-1;
-        while (j >= 0 && n[j] > temp)
-        {
-            loop_count++;
-            algo_steps++;
-            swap_count++;
-            //swap and shift
-            n[j+1]=n[j];
-            j--;
-        }
-        n[j+1]=temp;
-    }
-    dbg("loop count %d", loop_count);
-    dbg("swap count %d", swap_count);
 }
 
 UTEST(math, inssort_bestcase) {
