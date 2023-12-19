@@ -16,22 +16,72 @@ void insertionsort(int *n, int num_elements)
     //Loop from 2nd element to num_elements.
     for(int i = 1; i<num_elements; i++)
     {
+        /* //Loop from ith element to 0th element. Loop backwards. */
+        /* for (int j = i; j; j--) */
+        /* { */
+        /*     loop_count++; */
+        /*     algo_steps++; */
+        /*     if(n[j] < n[j-1]) */
+        /*     { */
+        /*         algo_steps +=3; */
+        /*         swap_count++; */
+        /*         //swap and shift */
+        /*         temp = n[j]; */
+        /*         n[j]=n[j-1]; */
+        /*         n[j-1]=temp; */
+        /*     } */
+        /*     else */
+        /*     { */
+        /*         //else no need to swap. We can break now since the elements */
+        /*         //after n[j-1] will be smaller then n[j-1] (this is already a */
+        /*         //sorted list) */
+        /*         break; */
+        /*     } */
         //Loop from ith element to 0th element. Loop backwards.
-        for (int j = i; j; j--)
+        for (int j = i; j && (n[j] < n[j-1]); j--)
+        {
+            loop_count++;
+            algo_steps +=3;
+            swap_count++;
+            //swap and shift
+            temp = n[j];
+            n[j]=n[j-1];
+            n[j-1]=temp;
+        }
+    }
+}
+
+void standard_insertionsort(int *n, int num_elements)
+{
+    //compare inserted elementand previous and check if they need to be
+    //swapped. If yes then shift right and swap.
+
+    int loop_count = 0;
+    int swap_count = 0;
+    int temp, j;
+
+    //temp variable is the only storage required. In place swap of elements.
+    algo_storage++;
+
+    //Loop from 2nd element to num_elements.
+    for(int i = 1; i<num_elements; i++)
+    {
+        //select the ith position for the comparison.
+        //i is the start of the unsorted list.
+        //i-1(j) is there for the end of sorted list.
+        temp = n[i];
+        //Loop from jth element to 0th element. Loop backwards.
+        j = i-1;
+        while (j >= 0 && n[j] > temp)
         {
             loop_count++;
             algo_steps++;
-            if(n[j] < n[j-1])
-            {
-                algo_steps +=3;
-                swap_count++;
-                //swap and shift
-                temp = n[j];
-                n[j]=n[j-1];
-                n[j-1]=temp;
-            }
-            //else no need to swap
+            swap_count++;
+            //swap and shift
+            n[j+1]=n[j];
+            j--;
         }
+        n[j+1]=temp;
     }
     dbg("loop count %d", loop_count);
     dbg("swap count %d", swap_count);
