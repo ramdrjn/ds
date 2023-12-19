@@ -16,7 +16,7 @@ void countingsort(int *n, int range_lower, int range_upper, int num_elements)
     int index=0;
 
     //temp variable is the only storage required. In place swap of elements.
-    algo_storage += sizeof(counter);
+    algo_storage += sizeof(counter)/sizeof(int);
 
     memset(counter, 0, sizeof(counter));
 
@@ -157,6 +157,40 @@ UTEST(math, csort_stablecase) {
     algo_storage = 0;
 
     countingsort(n, 1, 9, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, csort_dupelementscase) {
+    int num_elements = 10;
+    int n[10] = {9,4,7,1,7,9,3,9,5,8};
+    int r[10] = {1,3,4,5,7,7,8,9,9,9};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    countingsort(n, 1, 9, num_elements);
+
+    for (int i = 0; i < num_elements; i++)
+        EXPECT_EQ(n[i], r[i]);
+
+    algo_time_analysis(num_elements, "n^2");
+    algo_space_analysis(num_elements, "1");
+}
+
+UTEST(math, csort_rangecase) {
+    int num_elements = 10;
+    int n[10] = {26,24,27,21,27,22,23,29,25,28};
+    int r[10] = {21,22,23,24,25,26,27,27,28,29};
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    countingsort(n, 21, 29, num_elements);
 
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], r[i]);
