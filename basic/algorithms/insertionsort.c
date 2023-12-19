@@ -22,10 +22,14 @@ void standard_insertionsort(int *n, int num_elements)
         temp = n[i];
         //Loop from jth element to 0th element. Loop backwards.
         j = i-1;
+
+        loop_count++;
+        algo_steps++;
+
         while (j >= 0 && n[j] > temp)
         {
             loop_count++;
-            algo_steps++;
+            algo_steps+=3;
             swap_count++;
             //swap and shift
             n[j+1]=n[j];
@@ -73,6 +77,10 @@ void insertionsort(int *n, int num_elements)
         /*         //sorted list) */
         /*         break; */
         /*     } */
+
+        loop_count++;
+        algo_steps++;
+
         //Loop from ith element to 0th element. Loop backwards.
         for (int j = i; j && (n[j] < n[j-1]); j--)
         {
@@ -99,7 +107,7 @@ UTEST(math, inssort_bestcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
+    algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "1");
 }
 
@@ -115,7 +123,7 @@ UTEST(math, inssort_bestcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "n^2");
+    algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "1");
 }
 
@@ -315,4 +323,3 @@ total inner loops: 10
 total swap: 10
 */
 
-//Best case O(n) rather than O(n^2) ?
