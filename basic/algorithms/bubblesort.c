@@ -26,10 +26,11 @@ void bubblesort(int *n, int num_elements)
         //next element.
         for (int j = 0; j<num_elements-1-i; j++)
         {
+            loop_count++;
+            algo_steps++;
             if(n[j] > n[j+1])
             {
                 swap_done=true;
-                loop_count++;
                 algo_steps +=3;
                 swap_count++;
                 //swap
