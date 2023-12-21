@@ -1,4 +1,6 @@
-INC_DIR=../../include
+INC_DIR=./include
+
+all:out.bin
 
 out.bin: $(src) $(INC_DIR)/utest/utest_main.c
 	gcc -g -O0 -Wall -I$(INC_DIR) $^ -o $@

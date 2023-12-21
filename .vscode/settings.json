@@ -1,0 +1,18 @@
+{
+    "makefile.makefilePath": "/home/rameshd/Work/ds/basic/Makefile",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/rameshd/Work/ds",
+            "binaryPath": "/home/rameshd/Work/ds/out.bin",
+            "binaryArgs": []
+        }
+    ],
+    "makefile.configurations": [
+        {
+            "makeArgs": [
+                "src=basic/algorithms/sorting/bubblesort.c"
+            ],
+            "name": "src configuration"
+        }
+    ]
+}
