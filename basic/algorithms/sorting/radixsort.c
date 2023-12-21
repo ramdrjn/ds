@@ -1,52 +1,6 @@
 #include "utest/utest.h"
 #include "algo_analysis.h"
 
-//Here the range is always going to be between 0 to 9
-void countingsort(int *n, int num_elements)
-{
-    //Count the occurances of the values and update that in their
-    //corresponding index in the counting array.
-    //Once all the element's count values are updated, recreate the list
-    //based on the count values.
-
-    int loop_count = 0;
-    int swap_count = 0;
-
-    int counter[10]={0};
-    int index=0;
-
-    algo_storage += sizeof(counter)/sizeof(int);
-
-    //Loop from 1 to num_elements.
-    for(int i = 0; i<num_elements; i++)
-    {
-        loop_count++;
-        algo_steps++;
-
-        counter[index] += 1;
-    }
-    //for (int i = 0; i < range_upper-range_lower+1; i++)
-    //    printf("%d ",counter[i]);
-
-    //Recreate array but with sorted elements
-    for(int i = 0, index=0; index<num_elements;i++)
-    {
-        loop_count++;
-        algo_steps++;
-
-        for(int j=0; j<counter[i]; j++)
-        {
-            loop_count++;
-            algo_steps++;
-
-            n[index]=i+index_adjust;
-            index++;
-        }
-    }
-
-    dbg("loop count %d", loop_count);
-    dbg("swap count %d", swap_count);
-}
 
 UTEST(math, radixsort_bestcase) {
     int num_elements = 5;
