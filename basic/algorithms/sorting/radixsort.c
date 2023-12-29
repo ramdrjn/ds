@@ -94,8 +94,8 @@ UTEST(math, radixsort_bestcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i+1);
 
-    algo_time_analysis(num_elements, "d*(n+k)");
-    algo_space_analysis(num_elements, "n+k");
+    algo_time_analysis(num_elements, "digits*(n+range)");
+    algo_space_analysis(num_elements, "n+range");
 }
 
 UTEST(math, radixsort_bestcase_10) {
@@ -110,8 +110,8 @@ UTEST(math, radixsort_bestcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], i);
 
-    algo_time_analysis(num_elements, "d*(n+k)");
-    algo_space_analysis(num_elements, "n+k");
+    algo_time_analysis(num_elements, "digits*(n+range)");
+    algo_space_analysis(num_elements, "n+range");
 }
 
 UTEST(math, radixsort_worstcase) {
@@ -127,8 +127,8 @@ UTEST(math, radixsort_worstcase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], r[i]);
 
-    algo_time_analysis(num_elements, "d*(n+k)");
-    algo_space_analysis(num_elements, "n+k");
+    algo_time_analysis(num_elements, "digits*(n+range)");
+    algo_space_analysis(num_elements, "n+range");
 }
 
 UTEST(math, radixsort_worstcase_10) {
@@ -144,8 +144,8 @@ UTEST(math, radixsort_worstcase_10) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], r[i]);
 
-    algo_time_analysis(num_elements, "d*(n+k)");
-    algo_space_analysis(num_elements, "n+k");
+    algo_time_analysis(num_elements, "digits*(n+range)");
+    algo_space_analysis(num_elements, "n+range");
 }
 
 UTEST(math, radixsort_worstcase_4) {
@@ -161,8 +161,8 @@ UTEST(math, radixsort_worstcase_4) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], r[i]);
 
-    algo_time_analysis(num_elements, "d*(n+k)");
-    algo_space_analysis(num_elements, "n+k");
+    algo_time_analysis(num_elements, "digits*(n+range)");
+    algo_space_analysis(num_elements, "n+range");
 }
 
 UTEST(math, radixsort_averagecase) {
@@ -178,8 +178,8 @@ UTEST(math, radixsort_averagecase) {
     for (int i = 0; i < num_elements; i++)
         EXPECT_EQ(n[i], r[i]);
 
-    algo_time_analysis(num_elements, "d*(n+k)");
-    algo_space_analysis(num_elements, "n+k");
+    algo_time_analysis(num_elements, "digits*(n+range)");
+    algo_space_analysis(num_elements, "n+range");
 }
 
 //example run
