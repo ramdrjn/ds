@@ -3,27 +3,6 @@
 
 #define NUM_BUCKETS 3
 
-void simple_sort(int *b, int size)
-{
-    int temp;
-    for(int i = 0; i<size; i+=NUM_BUCKETS)
-    {
-        if(b[i] > b[i+1])
-        {
-            temp=b[i];
-            b[i]=b[i+1];
-            b[i+1]=temp;
-        }
-    }
-}
-
-int compute_hash(int value)
-{
-    int base = (value / 10)*NUM_BUCKETS;
-    base += (value % 10) - 1;
-    return base;
-}
-
 void bucketsort(int *n, int num_elements)
 {
     //compute hash for the elements and distribute it into buckets
@@ -46,13 +25,16 @@ void bucketsort(int *n, int num_elements)
     for(i = 0; i<num_elements; i++)
     {
         loop_count++;
-        algo_steps++;
-        bucket_index = compute_hash(n[i]);
+        algo_steps+=3;
+
+        bucket_index = (n[i] / 10)*NUM_BUCKETS;
+        bucket_index += (n[i] % 10) - 1;
         buckets[bucket_index] = n[i];
     }
 
-    //sort buckets
-    simple_sort(buckets, bucketsize);
+    //sort buckets. Right now not needed since the bucket distribution
+    //takes care of sorting.
+    //sort(buckets, bucketsize);
 
     //refill buffers with sorted values
     i=0;
@@ -60,6 +42,7 @@ void bucketsort(int *n, int num_elements)
     {
         loop_count++;
         algo_steps++;
+
         if(buckets[bucket_index] != 0)
         {
             n[i]=buckets[bucket_index];
