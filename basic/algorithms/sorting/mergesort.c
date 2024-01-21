@@ -89,7 +89,7 @@ void mergesort(int *n, int l, int r)
     }
 }
 
-UTEST(math, mergesort_bestcase) {
+UTEST(sorting, mergesort_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -105,7 +105,7 @@ UTEST(math, mergesort_bestcase) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_bestcase_10) {
+UTEST(sorting, mergesort_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
@@ -121,7 +121,7 @@ UTEST(math, mergesort_bestcase_10) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_worstcase) {
+UTEST(sorting, mergesort_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
@@ -137,7 +137,7 @@ UTEST(math, mergesort_worstcase) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_worstcase_10) {
+UTEST(sorting, mergesort_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
@@ -153,7 +153,7 @@ UTEST(math, mergesort_worstcase_10) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_averagecase) {
+UTEST(sorting, mergesort_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
@@ -169,7 +169,7 @@ UTEST(math, mergesort_averagecase) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_averagecase_10) {
+UTEST(sorting, mergesort_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
@@ -185,7 +185,7 @@ UTEST(math, mergesort_averagecase_10) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_stablecase) {
+UTEST(sorting, mergesort_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -202,7 +202,7 @@ UTEST(math, mergesort_stablecase) {
     algo_space_analysis(num_elements, "m+n");
 }
 
-UTEST(math, mergesort_randomcase) {
+UTEST(sorting, mergesort_randomcase) {
     int num_elements = 10;
     int n[10] = {583,31,6,244,4767,322,46,689,765,238};
     int r[10] = {6,31,46,238,244,322,583,689,765,4767};

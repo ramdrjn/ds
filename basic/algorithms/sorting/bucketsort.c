@@ -53,7 +53,7 @@ void bucketsort(int *n, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, bucketsort) {
+UTEST(sorting, bucketsort) {
     int num_elements = 10;
     int n[10] = {21,20,10,41,22,51,11,42,31,32};
     int r[10] = {10,11,20,21,22,31,32,41,42,51};

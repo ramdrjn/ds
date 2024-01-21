@@ -82,7 +82,7 @@ void radixsort(int *n, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, radixsort_bestcase) {
+UTEST(sorting, radixsort_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -98,7 +98,7 @@ UTEST(math, radixsort_bestcase) {
     algo_space_analysis(num_elements, "n+range");
 }
 
-UTEST(math, radixsort_bestcase_10) {
+UTEST(sorting, radixsort_bestcase_10) {
     int num_elements = 10;
     int n[10] = {0,1,2,3,4,5,6,7,8,9};
 
@@ -114,7 +114,7 @@ UTEST(math, radixsort_bestcase_10) {
     algo_space_analysis(num_elements, "n+range");
 }
 
-UTEST(math, radixsort_worstcase) {
+UTEST(sorting, radixsort_worstcase) {
     int num_elements = 5;
     int n[10] = {515,424,333,242,151};
     int r[10] = {151,242,333,424,515};
@@ -131,7 +131,7 @@ UTEST(math, radixsort_worstcase) {
     algo_space_analysis(num_elements, "n+range");
 }
 
-UTEST(math, radixsort_worstcase_10) {
+UTEST(sorting, radixsort_worstcase_10) {
     int num_elements = 10;
     int n[10] = {909,818,727,636,545,454,363,272,181,90};
     int r[10] = {90,181,272,363,454,545,636,727,818,909};
@@ -148,7 +148,7 @@ UTEST(math, radixsort_worstcase_10) {
     algo_space_analysis(num_elements, "n+range");
 }
 
-UTEST(math, radixsort_worstcase_4) {
+UTEST(sorting, radixsort_worstcase_4) {
     int num_elements = 5;
     int n[10] = {515,442,4333,42,151};
     int r[10] = {42,151,442,515,4333};
@@ -165,7 +165,7 @@ UTEST(math, radixsort_worstcase_4) {
     algo_space_analysis(num_elements, "n+range");
 }
 
-UTEST(math, radixsort_averagecase) {
+UTEST(sorting, radixsort_averagecase) {
     int num_elements = 10;
     int n[10] = {356,6789,437,571,2437,752,683,29,85,358};
     int r[10] = {29,85,356,358,437,571,683,752,2437,6789};

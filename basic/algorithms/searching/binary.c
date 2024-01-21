@@ -60,7 +60,7 @@ bool binary_search_recursive(int *n, int element, int start, int end)
     return false;
 }
 
-UTEST(math, binarysearch_found) {
+UTEST(search, binarysearch_found) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,9};
     int element = 4;
@@ -77,7 +77,7 @@ UTEST(math, binarysearch_found) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, binarysearch_notfound) {
+UTEST(search, binarysearch_notfound) {
     int num_elements = 10;
     int n[10] = {1,2,3,3,5,6,7,8,9,9};
     int element = 4;
@@ -94,7 +94,7 @@ UTEST(math, binarysearch_notfound) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, binarysearch_recursive_found) {
+UTEST(search, binarysearch_recursive_found) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,9};
     int element = 4;
@@ -111,7 +111,7 @@ UTEST(math, binarysearch_recursive_found) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, binarysearch_recursive_notfound) {
+UTEST(search, binarysearch_recursive_notfound) {
     int num_elements = 10;
     int n[10] = {1,2,3,3,5,6,7,8,9,9};
     int element = 4;

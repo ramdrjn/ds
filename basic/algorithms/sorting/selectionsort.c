@@ -53,7 +53,7 @@ void selectionsortmax(int *n, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, ssort_max_bestcase) {
+UTEST(sorting, ssort_max_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -69,7 +69,7 @@ UTEST(math, ssort_max_bestcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_bestcase_10) {
+UTEST(sorting, ssort_max_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
@@ -85,7 +85,7 @@ UTEST(math, ssort_max_bestcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_worstcase) {
+UTEST(sorting, ssort_max_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
@@ -101,7 +101,7 @@ UTEST(math, ssort_max_worstcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_worstcase_10) {
+UTEST(sorting, ssort_max_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
@@ -117,7 +117,7 @@ UTEST(math, ssort_max_worstcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_averagecase) {
+UTEST(sorting, ssort_max_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
@@ -133,7 +133,7 @@ UTEST(math, ssort_max_averagecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_averagecase_10) {
+UTEST(sorting, ssort_max_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
@@ -149,7 +149,7 @@ UTEST(math, ssort_max_averagecase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_stablecase) {
+UTEST(sorting, ssort_max_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -166,7 +166,7 @@ UTEST(math, ssort_max_stablecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_max_randomcase) {
+UTEST(sorting, ssort_max_randomcase) {
     int num_elements = 10;
     int n[10] = {583,31,6,244,4767,322,46,689,765,238};
     int r[10] = {6,31,46,238,244,322,583,689,765,4767};
@@ -320,7 +320,7 @@ void selectionsortmin(int *n, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, ssort_min_bestcase) {
+UTEST(sorting, ssort_min_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -336,7 +336,7 @@ UTEST(math, ssort_min_bestcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_bestcase_10) {
+UTEST(sorting, ssort_min_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
@@ -352,7 +352,7 @@ UTEST(math, ssort_min_bestcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_worstcase) {
+UTEST(sorting, ssort_min_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
@@ -368,7 +368,7 @@ UTEST(math, ssort_min_worstcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_worstcase_10) {
+UTEST(sorting, ssort_min_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
@@ -384,7 +384,7 @@ UTEST(math, ssort_min_worstcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_averagecase) {
+UTEST(sorting, ssort_min_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
@@ -400,7 +400,7 @@ UTEST(math, ssort_min_averagecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_averagecase_10) {
+UTEST(sorting, ssort_min_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
@@ -416,7 +416,7 @@ UTEST(math, ssort_min_averagecase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_stablecase) {
+UTEST(sorting, ssort_min_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -433,7 +433,7 @@ UTEST(math, ssort_min_stablecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, ssort_min_randomcase) {
+UTEST(sorting, ssort_min_randomcase) {
     int num_elements = 10;
     int n[10] = {583,31,6,244,4767,322,46,689,765,238};
     int r[10] = {6,31,46,238,244,322,583,689,765,4767};

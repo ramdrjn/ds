@@ -78,7 +78,7 @@ void countingsort(int *n, int range_lower, int range_upper, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, csort_bestcase) {
+UTEST(sorting, csort_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -94,7 +94,7 @@ UTEST(math, csort_bestcase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_bestcase_10) {
+UTEST(sorting, csort_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
@@ -110,7 +110,7 @@ UTEST(math, csort_bestcase_10) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_worstcase) {
+UTEST(sorting, csort_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
@@ -126,7 +126,7 @@ UTEST(math, csort_worstcase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_worstcase_10) {
+UTEST(sorting, csort_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
@@ -142,7 +142,7 @@ UTEST(math, csort_worstcase_10) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_averagecase) {
+UTEST(sorting, csort_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
@@ -158,7 +158,7 @@ UTEST(math, csort_averagecase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_averagecase_10) {
+UTEST(sorting, csort_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
@@ -174,7 +174,7 @@ UTEST(math, csort_averagecase_10) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_stablecase) {
+UTEST(sorting, csort_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -191,7 +191,7 @@ UTEST(math, csort_stablecase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_dupelementscase) {
+UTEST(sorting, csort_dupelementscase) {
     int num_elements = 10;
     int n[10] = {9,4,7,1,7,9,3,9,5,8};
     int r[10] = {1,3,4,5,7,7,8,9,9,9};
@@ -208,7 +208,7 @@ UTEST(math, csort_dupelementscase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_rangecase) {
+UTEST(sorting, csort_rangecase) {
     int num_elements = 10;
     int n[10] = {26,24,27,21,27,22,23,29,25,28};
     int r[10] = {21,22,23,24,25,26,27,27,28,29};
@@ -225,7 +225,7 @@ UTEST(math, csort_rangecase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_randomcase) {
+UTEST(sorting, csort_randomcase) {
     int num_elements = 10;
     int n[10] = {583,31,6,244,4767,322,46,689,765,238};
     int r[10] = {6,31,46,238,244,322,583,689,765,4767};
@@ -302,7 +302,7 @@ void countingsort_range(int *n, int range_lower, int range_upper,
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, csort_range_bestcase) {
+UTEST(sorting, csort_range_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -318,7 +318,7 @@ UTEST(math, csort_range_bestcase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_bestcase_10) {
+UTEST(sorting, csort_range_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
@@ -334,7 +334,7 @@ UTEST(math, csort_range_bestcase_10) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_worstcase) {
+UTEST(sorting, csort_range_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
@@ -350,7 +350,7 @@ UTEST(math, csort_range_worstcase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_worstcase_10) {
+UTEST(sorting, csort_range_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
@@ -366,7 +366,7 @@ UTEST(math, csort_range_worstcase_10) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_averagecase) {
+UTEST(sorting, csort_range_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
@@ -382,7 +382,7 @@ UTEST(math, csort_range_averagecase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_averagecase_10) {
+UTEST(sorting, csort_range_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
@@ -398,7 +398,7 @@ UTEST(math, csort_range_averagecase_10) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_stablecase) {
+UTEST(sorting, csort_range_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -415,7 +415,7 @@ UTEST(math, csort_range_stablecase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_dupelementscase) {
+UTEST(sorting, csort_range_dupelementscase) {
     int num_elements = 10;
     int n[10] = {9,4,7,1,7,9,3,9,5,8};
     int r[10] = {1,3,4,5,7,7,8,9,9,9};
@@ -432,7 +432,7 @@ UTEST(math, csort_range_dupelementscase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_rangecase) {
+UTEST(sorting, csort_range_rangecase) {
     int num_elements = 10;
     int n[10] = {26,24,27,21,27,22,23,29,25,28};
     int r[10] = {21,22,23,24,25,26,27,27,28,29};
@@ -449,7 +449,7 @@ UTEST(math, csort_range_rangecase) {
     algo_space_analysis(num_elements, "range");
 }
 
-UTEST(math, csort_range_randomcase) {
+UTEST(sorting, csort_range_randomcase) {
     UTEST_SKIP("Range too large");
 }
 

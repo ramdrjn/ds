@@ -56,7 +56,7 @@ bool linear_search_sorted(int *n, int num_elements, int element)
     return false;
 }
 
-UTEST(math, linearsearch_unsorted_unsorted_found) {
+UTEST(search, linearsearch_unsorted_unsorted_found) {
     int num_elements = 10;
     int n[10] = {9,8,7,6,5,9,4,3,2,1};
     int element = 4;
@@ -73,7 +73,7 @@ UTEST(math, linearsearch_unsorted_unsorted_found) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, linearsearch_unsorted_sorted_found) {
+UTEST(search, linearsearch_unsorted_sorted_found) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,9};
     int element = 4;
@@ -90,7 +90,7 @@ UTEST(math, linearsearch_unsorted_sorted_found) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, linearsearch_unsorted_unsorted_notfound) {
+UTEST(search, linearsearch_unsorted_unsorted_notfound) {
     int num_elements = 10;
     int n[10] = {9,8,7,6,5,9,2,3,2,1};
     int element = 4;
@@ -107,7 +107,7 @@ UTEST(math, linearsearch_unsorted_unsorted_notfound) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, linearsearch_unsorted_sorted_notfound) {
+UTEST(search, linearsearch_unsorted_sorted_notfound) {
     int num_elements = 10;
     int n[10] = {1,2,3,3,5,6,7,8,9,9};
     int element = 4;
@@ -124,7 +124,7 @@ UTEST(math, linearsearch_unsorted_sorted_notfound) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, linearsearch_sorted_sorted_found) {
+UTEST(search, linearsearch_sorted_sorted_found) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,9};
     int element = 4;
@@ -141,7 +141,7 @@ UTEST(math, linearsearch_sorted_sorted_found) {
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, linearsearch_sorted_sorted_notfound) {
+UTEST(search, linearsearch_sorted_sorted_notfound) {
     int num_elements = 10;
     int n[10] = {1,2,3,3,5,6,7,8,9,9};
     int element = 4;

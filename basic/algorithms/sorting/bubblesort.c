@@ -48,7 +48,7 @@ void bubblesort(int *n, int num_elements)
     dbg("swap count %d", swap_count);
 }
 
-UTEST(math, bbsort_bestcase) {
+UTEST(sorting, bbsort_bestcase) {
     int num_elements = 5;
     int n[5] = {1,2,3,4,5};
 
@@ -64,7 +64,7 @@ UTEST(math, bbsort_bestcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_bestcase_10) {
+UTEST(sorting, bbsort_bestcase_10) {
     int num_elements = 10;
     int n[10] = {1,2,3,4,5,6,7,8,9,10};
 
@@ -80,7 +80,7 @@ UTEST(math, bbsort_bestcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_worstcase) {
+UTEST(sorting, bbsort_worstcase) {
     int num_elements = 5;
     int n[5] = {5,4,3,2,1};
 
@@ -96,7 +96,7 @@ UTEST(math, bbsort_worstcase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_worstcase_10) {
+UTEST(sorting, bbsort_worstcase_10) {
     int num_elements = 10;
     int n[10] = {10,9,8,7,6,5,4,3,2,1};
 
@@ -112,7 +112,7 @@ UTEST(math, bbsort_worstcase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_averagecase) {
+UTEST(sorting, bbsort_averagecase) {
     int num_elements = 5;
     int n[5] = {3,4,1,5,2};
 
@@ -128,7 +128,7 @@ UTEST(math, bbsort_averagecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_averagecase_10) {
+UTEST(sorting, bbsort_averagecase_10) {
     int num_elements = 10;
     int n[10] = {3,4,1,5,2,8,10,9,7,6};
 
@@ -144,7 +144,7 @@ UTEST(math, bbsort_averagecase_10) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_stablecase) {
+UTEST(sorting, bbsort_stablecase) {
     int num_elements = 10;
     int n[10] = {6,4,7,1,7,2,3,9,5,8};
     int r[10] = {1,2,3,4,5,6,7,7,8,9};
@@ -161,7 +161,7 @@ UTEST(math, bbsort_stablecase) {
     algo_space_analysis(num_elements, "1");
 }
 
-UTEST(math, bbsort_randomcase) {
+UTEST(sorting, bbsort_randomcase) {
     int num_elements = 10;
     int n[10] = {583,31,6,244,4767,322,46,689,765,238};
     int r[10] = {6,31,46,238,244,322,583,689,765,4767};
