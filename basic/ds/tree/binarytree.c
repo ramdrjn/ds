@@ -133,6 +133,12 @@ tree_node_t* delete_binary_tree_node(tree_node_t* root, int value)
     }
     else // If both children exist
     {
+        //Two ways of selecting the successor.
+        //1. Inorder predecessor. Largest value from the left side.
+        //2. inorder successor. Smallest value from the right side.
+
+        //This is the in order successor implementation.
+
         tree_node_t* succParent = root;
 
         // Find successor
@@ -204,6 +210,27 @@ void binary_tree_in_order_traversal_recursive(int *r, int *index,
         //printf("%d", root->value);
         binary_tree_in_order_traversal_recursive(r, index, root->right);
     }
+}
+
+int binary_search_tree_search(tree_node_t *root, int value)
+{
+    while(root)
+    {
+        algo_steps++;
+        if(root->value == value)
+        {
+            return 1;
+        }
+        else if(root->value > value)
+        {
+            root=root->left;
+        }
+        else
+        {
+            root=root->right;
+        }
+    }
+    return 0;
 }
 
 static int init_done=0;
@@ -428,6 +455,50 @@ UTEST_F(ds, binarytree_in_order_traversal_recursive_after_delete_insert)
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
+}
+
+//BST - Binary search tree
+/*
+                   7
+              /        \
+             3         10
+            /  \       / \
+           1    4     8  11
+            \
+             2
+ */
+UTEST_F(ds, binary_search_tree_search_found)
+{
+    int num_elements=8;
+    int element = 10;
+    int result;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    result = binary_search_tree_search(utest_fixture->root, element);
+
+    EXPECT_EQ(result, 1);
+
+    algo_time_analysis(num_elements, "n");
+    //algo_space_analysis(num_elements, "1");
+}
+
+UTEST_F(ds, binary_search_tree_search_no_found)
+{
+    int num_elements=8;
+    int element = 12;
+    int result;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    result = binary_search_tree_search(utest_fixture->root, element);
+
+    EXPECT_EQ(result, 0);
+
+    algo_time_analysis(num_elements, "n");
+    //algo_space_analysis(num_elements, "1");
 }
 
 //example run
