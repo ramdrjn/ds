@@ -18,6 +18,7 @@ tree_node_t* init_binary_tree(void)
     //In this example smaller values are placed to left and larger values
     //on right
     //root value will be the first element in array.
+    //Cannot have duplicate values.
 
     tree_node_t *t = NULL;
 
