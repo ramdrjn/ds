@@ -7,19 +7,50 @@ typedef struct tree_node tree_node_t;
 struct tree_node
 {
     int value;
+    int height; 
     tree_node_t *left;
     tree_node_t *right;
 };
 
-tree_node_t* init_binary_tree(void)
-{
-    //Binary tree is not height balanced.
-    //left and right placement of node values can be custom.
-    //In this example smaller values are placed to left and larger values
-    //on right
-    //root value will be the first element in array.
-    //Cannot have duplicate values.
+// Avl tree is height balanced tree.
+// Balance if the node balance factor is not -1,0 or 1
+// Rotate to balance nodes.
+// Rotate left if node is right heavy(-2)
+/*
+          x -2                                y 0
+           \                                /  \
+            y -1             ->          0  x    z 0
+            \
+             z 0
+*/
+// Rotate right if node is left heavy(2)
+/*
+          z 2                                y 0
+         /                                  /  \
+        y 1             ->              0  x    z 0
+       /
+      x 0
+*/
+// Rotate right left
+/*
+          x -2       x -2                      y 0
+           \          \                      /  \
+            z 1   ->   y -1       ->      0  x    z 0
+           /            \
+          y 0            z 0
+*/
+// Rotate left right
+/*
+          z 2          z 2                   y 0
+         /            /                    /  \
+        x -1   ->    y 1       ->      0  x    z 0
+         \          /
+          y 0      x 0
+*/
+//
 
+tree_node_t* init_avl_tree(void)
+{
     tree_node_t *t = NULL;
 
     algo_steps++;
@@ -34,12 +65,12 @@ tree_node_t* init_binary_tree(void)
     return t;
 }
 
-void deinit_binary_tree(tree_node_t *root)
+void deinit_avl_tree(tree_node_t *root)
 {
     MEM_FREE(root);
 }
 
-void insert_binary_tree_root(int value, tree_node_t *root)
+void insert_avl_tree_root(int value, tree_node_t *root)
 {
     algo_steps++;
 
@@ -48,7 +79,7 @@ void insert_binary_tree_root(int value, tree_node_t *root)
     root->value=value;
 }
 
-void insert_binary_tree_node(int value, tree_node_t *root)
+void insert_avl_tree_node(int value, tree_node_t *root)
 {
     tree_node_t *t = NULL;
     tree_node_t *curr_node = root;
@@ -98,21 +129,21 @@ void insert_binary_tree_node(int value, tree_node_t *root)
     }
 }
 
-/* Given a binary search tree and a value, this function
+/* Given a avl search tree and a value, this function
    deletes the value and returns the new root */
-tree_node_t* delete_binary_tree_node_recursive(tree_node_t* root, int value)
+tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value)
 {
     if (root == NULL)
         return root;
 
     if (root->value > value)
     {
-        root->left = delete_binary_tree_node_recursive(root->left, value);
+        root->left = delete_avl_tree_node_recursive(root->left, value);
         return root;
     }
     else if (root->value < value)
     {
-        root->right = delete_binary_tree_node_recursive(root->right, value);
+        root->right = delete_avl_tree_node_recursive(root->right, value);
         return root;
     }
 
@@ -171,7 +202,7 @@ tree_node_t* delete_binary_tree_node_recursive(tree_node_t* root, int value)
 }
 
 /* Depth first search */
-void binary_tree_pre_order_traversal_recursive(int *r, int *index,
+void avl_tree_pre_order_traversal_recursive(int *r, int *index,
                                                tree_node_t *root)
 {
     if(root)
@@ -180,40 +211,40 @@ void binary_tree_pre_order_traversal_recursive(int *r, int *index,
         r[*index]=root->value;
         *index=*index+1;
         //printf("%d", root->value);
-        binary_tree_pre_order_traversal_recursive(r, index, root->left);
-        binary_tree_pre_order_traversal_recursive(r, index, root->right);
+        avl_tree_pre_order_traversal_recursive(r, index, root->left);
+        avl_tree_pre_order_traversal_recursive(r, index, root->right);
     }
 }
 
-void binary_tree_post_order_traversal_recursive(int *r, int *index,
+void avl_tree_post_order_traversal_recursive(int *r, int *index,
                                                 tree_node_t *root)
 {
     if(root)
     {
         algo_steps++;
-        binary_tree_post_order_traversal_recursive(r, index, root->left);
-        binary_tree_post_order_traversal_recursive(r, index, root->right);
+        avl_tree_post_order_traversal_recursive(r, index, root->left);
+        avl_tree_post_order_traversal_recursive(r, index, root->right);
         r[*index]=root->value;
         *index=*index+1;
         //printf("%d", root->value);
     }
 }
 
-void binary_tree_in_order_traversal_recursive(int *r, int *index,
+void avl_tree_in_order_traversal_recursive(int *r, int *index,
                                               tree_node_t *root)
 {
     if(root)
     {
         algo_steps++;
-        binary_tree_in_order_traversal_recursive(r, index, root->left);
+        avl_tree_in_order_traversal_recursive(r, index, root->left);
         r[*index]=root->value;
         *index=*index+1;
         //printf("%d", root->value);
-        binary_tree_in_order_traversal_recursive(r, index, root->right);
+        avl_tree_in_order_traversal_recursive(r, index, root->right);
     }
 }
 
-int binary_search_tree_search(tree_node_t *root, int value)
+int avl_search_tree_search(tree_node_t *root, int value)
 {
     while(root)
     {
@@ -248,7 +279,7 @@ UTEST_F_SETUP(ds)
     {
         tree_root = NULL;
 
-        tree_root = init_binary_tree();
+        tree_root = init_avl_tree();
 
         init_done=1;
     }
@@ -260,7 +291,7 @@ UTEST_F_SETUP(ds)
 
 UTEST_F_TEARDOWN(ds)
 {
-    //deinit_binary_tree(utest_fixture->root);
+    //deinit_avl_tree(utest_fixture->root);
 }
 
 /*
@@ -272,7 +303,7 @@ UTEST_F_TEARDOWN(ds)
             \  /    /   \
              2 4   7     9
  */
-UTEST_F(ds, binarytree_insert)
+UTEST_F(ds, avltree_insert)
 {
     int num_elements = 10;
     int n[10] = {6,3,10,5,1,8,2,4,9,7};
@@ -280,16 +311,16 @@ UTEST_F(ds, binarytree_insert)
     algo_steps = 0;
     algo_storage = 0;
 
-    insert_binary_tree_root(n[0], utest_fixture->root);
+    insert_avl_tree_root(n[0], utest_fixture->root);
 
     for(int i=1; i<num_elements; i++)
-        insert_binary_tree_node(n[i], utest_fixture->root);
+        insert_avl_tree_node(n[i], utest_fixture->root);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
 }
 
-UTEST_F(ds, binarytree_pre_order_traversal_recursive)
+UTEST_F(ds, avltree_pre_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
@@ -299,7 +330,7 @@ UTEST_F(ds, binarytree_pre_order_traversal_recursive)
     algo_steps = 0;
     algo_storage = 0;
 
-    binary_tree_pre_order_traversal_recursive(r, &index, utest_fixture->root);
+    avl_tree_pre_order_traversal_recursive(r, &index, utest_fixture->root);
     for(int i=0; i<num_elements; i++)
         EXPECT_EQ(r[i], expected[i]);
 
@@ -307,7 +338,7 @@ UTEST_F(ds, binarytree_pre_order_traversal_recursive)
     algo_space_analysis(num_elements, "n");
 }
 
-UTEST_F(ds, binarytree_post_order_traversal_recursive)
+UTEST_F(ds, avltree_post_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
@@ -317,7 +348,7 @@ UTEST_F(ds, binarytree_post_order_traversal_recursive)
     algo_steps = 0;
     algo_storage = 0;
 
-    binary_tree_post_order_traversal_recursive(r, &index, utest_fixture->root);
+    avl_tree_post_order_traversal_recursive(r, &index, utest_fixture->root);
     for(int i=0; i<num_elements; i++)
         EXPECT_EQ(r[i], expected[i]);
 
@@ -325,7 +356,7 @@ UTEST_F(ds, binarytree_post_order_traversal_recursive)
     algo_space_analysis(num_elements, "n");
 }
 
-UTEST_F(ds, binarytree_in_order_traversal_recursive)
+UTEST_F(ds, avltree_in_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
@@ -335,7 +366,7 @@ UTEST_F(ds, binarytree_in_order_traversal_recursive)
     algo_steps = 0;
     algo_storage = 0;
 
-    binary_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
+    avl_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
     for(int i=0; i<num_elements; i++)
         EXPECT_EQ(r[i], expected[i]);
 
@@ -352,14 +383,14 @@ UTEST_F(ds, binarytree_in_order_traversal_recursive)
             \  /    /   \
              2 4   7     9 <-
  */
-UTEST_F(ds, binarytree_delete_node_leaf)
+UTEST_F(ds, avltree_delete_node_leaf)
 {
     int num_elements=10;
 
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_binary_tree_node_recursive(utest_fixture->root, 9);
+    delete_avl_tree_node_recursive(utest_fixture->root, 9);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -374,14 +405,14 @@ UTEST_F(ds, binarytree_delete_node_leaf)
             \  /    /
              2 4   7
  */
-UTEST_F(ds, binarytree_delete_node_1_child)
+UTEST_F(ds, avltree_delete_node_1_child)
 {
     int num_elements=10;
 
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_binary_tree_node_recursive(utest_fixture->root, 5);
+    delete_avl_tree_node_recursive(utest_fixture->root, 5);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -396,14 +427,14 @@ UTEST_F(ds, binarytree_delete_node_1_child)
             \        /
              2      7
  */
-UTEST_F(ds, binarytree_insert_after_delete)
+UTEST_F(ds, avltree_insert_after_delete)
 {
     int num_elements=10;
 
     algo_steps = 0;
     algo_storage = 0;
 
-    insert_binary_tree_node(11, utest_fixture->root);
+    insert_avl_tree_node(11, utest_fixture->root);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -418,14 +449,14 @@ UTEST_F(ds, binarytree_insert_after_delete)
             \        /
              2      7
  */
-UTEST_F(ds, binarytree_delete_node_2_child)
+UTEST_F(ds, avltree_delete_node_2_child)
 {
     int num_elements=10;
 
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_binary_tree_node_recursive(utest_fixture->root, 6);
+    delete_avl_tree_node_recursive(utest_fixture->root, 6);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -440,7 +471,7 @@ UTEST_F(ds, binarytree_delete_node_2_child)
             \
              2
  */
-UTEST_F(ds, binarytree_in_order_traversal_recursive_after_delete_insert)
+UTEST_F(ds, avltree_in_order_traversal_recursive_after_delete_insert)
 {
     int num_elements = 8;
     int r[8] = {0};
@@ -450,7 +481,7 @@ UTEST_F(ds, binarytree_in_order_traversal_recursive_after_delete_insert)
     algo_steps = 0;
     algo_storage = 0;
 
-    binary_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
+    avl_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
     for(int i=0; i<num_elements; i++)
         EXPECT_EQ(r[i], expected[i]);
 
@@ -458,7 +489,7 @@ UTEST_F(ds, binarytree_in_order_traversal_recursive_after_delete_insert)
     algo_space_analysis(num_elements, "n");
 }
 
-//BST - Binary search tree
+//BST - avl search tree
 /*
                    7
               /        \
@@ -468,7 +499,7 @@ UTEST_F(ds, binarytree_in_order_traversal_recursive_after_delete_insert)
             \
              2
  */
-UTEST_F(ds, binary_search_tree_search_found)
+UTEST_F(ds, avl_search_tree_search_found)
 {
     int num_elements=8;
     int element = 10;
@@ -477,7 +508,7 @@ UTEST_F(ds, binary_search_tree_search_found)
     algo_steps = 0;
     algo_storage = 0;
 
-    result = binary_search_tree_search(utest_fixture->root, element);
+    result = avl_search_tree_search(utest_fixture->root, element);
 
     EXPECT_EQ(result, 1);
 
@@ -485,7 +516,7 @@ UTEST_F(ds, binary_search_tree_search_found)
     //algo_space_analysis(num_elements, "1");
 }
 
-UTEST_F(ds, binary_search_tree_search_no_found)
+UTEST_F(ds, avl_search_tree_search_no_found)
 {
     int num_elements=8;
     int element = 12;
@@ -494,7 +525,7 @@ UTEST_F(ds, binary_search_tree_search_no_found)
     algo_steps = 0;
     algo_storage = 0;
 
-    result = binary_search_tree_search(utest_fixture->root, element);
+    result = avl_search_tree_search(utest_fixture->root, element);
 
     EXPECT_EQ(result, 0);
 
