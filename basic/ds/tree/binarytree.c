@@ -100,19 +100,19 @@ void insert_binary_tree_node(int value, tree_node_t *root)
 
 /* Given a binary search tree and a value, this function
    deletes the value and returns the new root */
-tree_node_t* delete_binary_tree_node(tree_node_t* root, int value)
+tree_node_t* delete_binary_tree_node_recursive(tree_node_t* root, int value)
 {
     if (root == NULL)
         return root;
 
     if (root->value > value)
     {
-        root->left = delete_binary_tree_node(root->left, value);
+        root->left = delete_binary_tree_node_recursive(root->left, value);
         return root;
     }
     else if (root->value < value)
     {
-        root->right = delete_binary_tree_node(root->right, value);
+        root->right = delete_binary_tree_node_recursive(root->right, value);
         return root;
     }
 
@@ -359,7 +359,7 @@ UTEST_F(ds, binarytree_delete_node_leaf)
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_binary_tree_node(utest_fixture->root, 9);
+    delete_binary_tree_node_recursive(utest_fixture->root, 9);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -381,7 +381,7 @@ UTEST_F(ds, binarytree_delete_node_1_child)
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_binary_tree_node(utest_fixture->root, 5);
+    delete_binary_tree_node_recursive(utest_fixture->root, 5);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -425,7 +425,7 @@ UTEST_F(ds, binarytree_delete_node_2_child)
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_binary_tree_node(utest_fixture->root, 6);
+    delete_binary_tree_node_recursive(utest_fixture->root, 6);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
