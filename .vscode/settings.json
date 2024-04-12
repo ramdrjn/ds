@@ -1,9 +1,9 @@
 {
-    "makefile.makefilePath": "/home/rameshd/Work/ds/Makefile",
+    "makefile.makefilePath": "/workspaces/ds/Makefile",
     "makefile.launchConfigurations": [
         {
-            "cwd": "/home/rameshd/Work/ds",
-            "binaryPath": "/home/rameshd/Work/ds/out.bin",
+            "cwd": "/workspaces/ds",
+            "binaryPath": "/workspaces/ds/out.bin",
             "binaryArgs": []
         }
     ],
