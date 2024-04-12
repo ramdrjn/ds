@@ -7,7 +7,7 @@ typedef struct tree_node tree_node_t;
 struct tree_node
 {
     int value;
-    int height; 
+    int height;
     tree_node_t *left;
     tree_node_t *right;
 };
@@ -127,6 +127,104 @@ void insert_avl_tree_node(int value, tree_node_t *root)
             }
         }
     }
+}
+
+/* Given a avl search tree and a value, this function
+   deletes the value and returns the new root */
+tree_node_t *delete_avl_tree_node(tree_node_t *root, int value)
+{
+    if (root == NULL)
+        return root;
+
+    if (root->value > value)
+    {
+        root->left = delete_avl_tree_node(root->left, value);
+        return root;
+    }
+    else if (root->value < value)
+    {
+        root->right = delete_avl_tree_node(root->right, value);
+        return root;
+    }
+
+    // We reach here when root is the node
+    // to be deleted.
+
+    // If one of the children is empty
+    if (root->left == NULL)
+    {
+        tree_node_t *t = root->right;
+        MEM_FREE(root);
+        return t;
+    }
+    else if (root->right == NULL)
+    {
+        tree_node_t *t = root->left;
+        MEM_FREE(root);
+        return t;
+    }
+    else // If both children exist
+    {
+        tree_node_t *succParent = root;
+
+        // Find successor
+        tree_node_t *succ = root->right;
+        while (succ->left != NULL)
+        {
+            succParent = succ;
+            succ = succ->left;
+        }
+
+        // Delete successor.  Since successor
+        // is always left child of its parent
+        // we can safely make successor's right
+        // right child as left of its parent.
+        // If there is no succ, then assign
+        // succ->right to succParent->right
+        if (succParent != root)
+            succParent->left = succ->right;
+        else
+            succParent->right = succ->right;
+
+        // Copy Successor Data to root
+        root->value = succ->value;
+
+        // Delete Successor and return root
+        MEM_FREE(succ);
+        return root;
+    }
+}
+
+tree_node_t *insert_avl_tree_node_recursive(int value, tree_node_t *node)
+{
+    tree_node_t *t = NULL;
+
+    algo_steps++;
+    algo_storage++;
+
+    if (node == NULL)
+    {
+        t = MEM_ALLOC(1, sizeof(tree_node_t));
+
+        t->left = NULL;
+        t->right = NULL;
+        t->value = value;
+        t->height = 0;
+        // dbg("insert node value %d", value);
+        return t;
+    }
+
+    if (value < node->value)
+        node->left = insert_avl_tree_node(value, node->left);
+    else if (value > node->value)
+        node->right = insert_avl_tree_node(value, node->right);
+    else
+    {
+        err("same node value. duplicate node %d", value);
+        return node;
+    }
+
+    return node;
 }
 
 /* Given a avl search tree and a value, this function
