@@ -1,7 +1,7 @@
 #AVL Tree
 
-n=[10,18,7,1,16,5,17,4,2,14,13,6,12,15]
-i=[3,9,8,11,19,20]
+n=[10,18,7,1,16,5,17,4,2,14,13,6,12,15,3,9,8,11,19,20]
+d=[2,1,12,18,11,7,16,5]
 
 class tree_node:
     def __init__(self, value):
@@ -133,15 +133,7 @@ if __name__ == "__main__":
     for i in range(0, len(n)):
         t.insert(n[i])
     t.print_tree()
-    print("after del 2")
-    t.delete(2)
-    t.print_tree()
-    print("after del 1")
-    t.delete(1)
-    t.print_tree()
-    print("after del 13")
-    t.delete(13)
-    t.print_tree()
-    print("after del 16")
-    t.delete(16)
-    t.print_tree()
+    for i in range(0, len(d)):
+        print("after del ", d[i])
+        t.delete(d[i])
+        t.print_tree()
