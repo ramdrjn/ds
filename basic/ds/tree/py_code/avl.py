@@ -15,6 +15,10 @@ class tree_node:
 class tree:
     def __init__(self):
         self.root=None
+    def _get_height(self, node):
+        if not node:
+            return 0
+        return node.height
     def _insert(self, curr_node, val):
         if not curr_node:
            return 
@@ -30,6 +34,7 @@ class tree:
                 self._insert(curr_node.right, val)
             else:
                 curr_node.right=tree_node(val)
+        curr_node.height = 1 + max(self._get_height(curr_node.left), self._get_height(curr_node.right))
     def insert(self, val):
         if self.root == None:
             self.root=tree_node(val)
@@ -76,7 +81,8 @@ class tree:
                 del(curr_node)
                 return t
             #handle node with both left and right 
-            curr_node = _delete_inorder_predecessor(curr_node)
+            curr_node = self._delete_inorder_predecessor(curr_node)
+        curr_node.height = 1 + max(self._get_height(curr_node.left), self._get_height(curr_node.right))
         return curr_node
     def delete(self, val):
         if self.root == None:
@@ -136,4 +142,4 @@ if __name__ == "__main__":
     t.print_tree()
     for i in range(0, len(d)):
         t.delete(d[i])
-    #t.print_tree()
+        t.print_tree()
