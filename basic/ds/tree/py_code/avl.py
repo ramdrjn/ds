@@ -19,6 +19,47 @@ class tree:
         if not node:
             return 0
         return node.height
+    def _get_balance(self, node):
+        if not node:
+            return 0
+        return self._get_height(node.left) - self._get_height(node.right)
+    def _adjust_height(self, node):
+        node.height = 1 + max(self._get_height(node.left), self._get_height(node.right))
+    def _rotate_right(self, node):
+        t=node.left
+        t1=t.right
+        t.right=node
+        node.left=t1
+        self._adjust_height(node)
+        self._adjust_height(t)
+        return t 
+    def _rotate_left(self, node):
+        t=node.right
+        t1=t.left
+        t.left=node
+        node.right=t1
+        self._adjust_height(node)
+        self._adjust_height(t)
+        return t
+    def _adjust_balance(self, node):
+        balance=self._get_balance(node)
+        if balance > 1: 
+            #Left heavy
+            if self._get_balance(node.left) >= 0:
+                return self._rotate_right(node)
+            else: 
+                #Double rotation
+                node.left=self._rotate_left(node.left)
+                return self._rotate_right(node)
+        elif balance < -1: 
+            #right heavy
+            if self._get_balance(node.right) <= 0:
+                return self._rotate_left(node)
+            else:
+                #Double rotation
+                node.right=self._rotate_right(node.right)
+                return self._rotate_left(node)
+        return node
     def _insert(self, curr_node, val):
         if not curr_node:
            return 
@@ -34,7 +75,8 @@ class tree:
                 self._insert(curr_node.right, val)
             else:
                 curr_node.right=tree_node(val)
-        curr_node.height = 1 + max(self._get_height(curr_node.left), self._get_height(curr_node.right))
+        self._adjust_height(curr_node)
+        return self._adjust_balance(curr_node)
     def insert(self, val):
         if self.root == None:
             self.root=tree_node(val)
@@ -82,8 +124,8 @@ class tree:
                 return t
             #handle node with both left and right 
             curr_node = self._delete_inorder_predecessor(curr_node)
-        curr_node.height = 1 + max(self._get_height(curr_node.left), self._get_height(curr_node.right))
-        return curr_node
+        self._adjust_height(curr_node)
+        return self._adjust_balance(curr_node)
     def delete(self, val):
         if self.root == None:
             return
