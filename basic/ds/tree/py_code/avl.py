@@ -1,14 +1,14 @@
 #AVL Tree
 
-n=[10,18,7,1,16,5,17,4,2,14,13,6,12,15]
-i=[3,9,8,11,19,20]
+n=[10,18,7,1,16,5,11,9,20,3,19,8,17,4,2,14,13,6,12,15]
+d=[]
 
 class tree_node:
     def __init__(self, value):
         self.value=value
         self.right=None
         self.left=None
-        self.height=0
+        self.height=1
     def __str__(self) -> str:
         return "l:{} v:{} h:{} r:{}".format(self.left, self.value, self.height, self.right)
 
@@ -35,40 +35,13 @@ class tree:
             self.root=tree_node(val)
             #print("ro:", self.root)
         else:
-           self._insert(self.root, val) 
-    def _delete(self, curr_node, val):
-        if curr_node == None:
-            return curr_node
-        if curr_node.value > val:
-            curr_node.left = self._delete(curr_node.left, val)
-            return curr_node
-        elif curr_node.value < val:
-            curr_node.right = self._delete(curr_node.right, val)
-            return curr_node
-        #found node
-        if curr_node.left == None:
-            if curr_node.right == None:
-                #Found a lone leaf node. Delete it and return None.
-                del(curr_node)
-                return None
-        if curr_node.left == None:
-            #Node with no left side but only right side.
-            #return the right node and delete the current node
-            t=curr_node.right
-            del(curr_node)
-            return t
-        if curr_node.right == None:
-            #No right side only left side.
-            t=curr_node.left
-            del(curr_node)
-            return t
-        #handle node with both left and right 
-        #Start with left side. Find the largest value on the left side.
-        #Inorder predecessor. Largest value from the left side.
+           self._insert(self.root, val)
+    def _delete_inorder_predecessor(self, curr_node):
+        #Start with left side. Find the largest value from the left side.
         succParent = curr_node
-        succ = curr_node.left 
+        succ = curr_node.left
         while succ.right:
-            succParent = succ 
+            succParent = succ
             succ = succ.right
         curr_node.value = succ.value
         if succParent == curr_node:
@@ -76,6 +49,34 @@ class tree:
         else:
             succParent.right=succ.left
         del(succ)
+        return curr_node
+    def _delete(self, curr_node, val):
+        if curr_node == None:
+            return curr_node
+        if curr_node.value > val:
+            curr_node.left = self._delete(curr_node.left, val)
+        elif curr_node.value < val:
+            curr_node.right = self._delete(curr_node.right, val)
+        else:
+            #found node
+            if curr_node.left == None:
+                if curr_node.right == None:
+                    #Found a lone leaf node. Delete it and return None.
+                    del(curr_node)
+                    return None
+            if curr_node.left == None:
+                #Node with no left side but only right side.
+                #return the right node and delete the current node
+                t=curr_node.right
+                del(curr_node)
+                return t
+            if curr_node.right == None:
+                #No right side only left side.
+                t=curr_node.left
+                del(curr_node)
+                return t
+            #handle node with both left and right 
+            curr_node = _delete_inorder_predecessor(curr_node)
         return curr_node
     def delete(self, val):
         if self.root == None:
@@ -85,7 +86,7 @@ class tree:
         """Returns list of strings, width, height, and horizontal coordinate of the root."""
         # No child.
         if node.right is None and node.left is None:
-            line = '%s' % node.value
+            line = '%s[%s]' % (node.value, node.height)
             width = len(line)
             height = 1
             middle = width // 2
@@ -93,7 +94,7 @@ class tree:
         # Only left child.
         if node.right is None:
             lines, n, p, x = self._display_aux(node.left)
-            s = '%s' % node.value
+            s = '%s[%s]' % (node.value, node.height)
             u = len(s)
             first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
             second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
@@ -102,7 +103,7 @@ class tree:
         # Only right child.
         if node.left is None:
             lines, n, p, x = self._display_aux(node.right)
-            s = '%s' % node.value
+            s = '%s[%s]' % (node.value, node.height)
             u = len(s)
             first_line = s + x * '_' + (n - x) * ' '
             second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
@@ -111,7 +112,7 @@ class tree:
         # Two children.
         left, n, p, x = self._display_aux(node.left)
         right, m, q, y = self._display_aux(node.right)
-        s = '%s' % node.value
+        s = '%s[%s]' % (node.value, node.height)
         u = len(s)
         first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
         second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
@@ -133,15 +134,6 @@ if __name__ == "__main__":
     for i in range(0, len(n)):
         t.insert(n[i])
     t.print_tree()
-    print("after del 2")
-    t.delete(2)
-    t.print_tree()
-    print("after del 1")
-    t.delete(1)
-    t.print_tree()
-    print("after del 13")
-    t.delete(13)
-    t.print_tree()
-    print("after del 16")
-    t.delete(16)
-    t.print_tree()
+    for i in range(0, len(d)):
+        t.delete(d[i])
+    #t.print_tree()
