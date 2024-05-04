@@ -66,13 +66,13 @@ class tree:
         if curr_node.value > val:
             #print("lt:", curr_node)
             if curr_node.left:
-                self._insert(curr_node.left, val)
+                curr_node.left=self._insert(curr_node.left, val)
             else:
                 curr_node.left=tree_node(val)
         else:
             #print("rt:", curr_node)
             if curr_node.right:
-                self._insert(curr_node.right, val)
+                curr_node.right=self._insert(curr_node.right, val)
             else:
                 curr_node.right=tree_node(val)
         self._adjust_height(curr_node)
@@ -82,7 +82,7 @@ class tree:
             self.root=tree_node(val)
             #print("ro:", self.root)
         else:
-           self._insert(self.root, val)
+           self.root=self._insert(self.root, val)
     def _delete_inorder_predecessor(self, curr_node):
         #Start with left side. Find the largest value from the left side.
         succParent = curr_node
@@ -179,9 +179,26 @@ class tree:
 
 if __name__ == "__main__":
     t = tree()
-    for i in range(0, len(n)):
-        t.insert(n[i])
-    t.print_tree()
-    for i in range(0, len(d)):
-        t.delete(d[i])
-        t.print_tree()
+    # for i in range(0, len(n)):
+    #     t.insert(n[i])
+    # t.print_tree()
+    # for i in range(0, len(d)):
+    #     t.delete(d[i])
+    #     t.print_tree()
+    choice = input("input(press i) or delete(press d) or quit (press q)")
+    while choice != 'q':
+        if choice == 'i':
+            val = int(input("input value (0 to exit):"))
+            while val != 0:
+                t.insert(val)
+                t.print_tree()
+                val = int(input("input value (0 to exit):"))
+        elif choice == 'd':
+            val = int(input("delete value (0 to exit):"))
+            while val != 0:
+                t.delete(val)
+                t.print_tree()
+                val = int(input("delete value (0 to exit):"))
+        else:
+            print("Not a valid input.")
+        choice = input("input(press i) or delete(press d) or quit (press q)")
