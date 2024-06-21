@@ -100,6 +100,20 @@ static void _adjust_height(tree_node_t *node)
                               _get_height(node->right));
 }
 
+static int _get_balance(tree_node_t *node)
+{
+    if (!node)
+        return 0;
+    return (_get_height(node->left) - _get_height(node->right));
+}
+
+static tree_node_t* _balance(tree_node_t *node)
+{
+    int bal = _get_balance(node);
+    dbg("val %d, balance %d", node->value, bal)
+    return node;
+}
+
 void insert_avl_tree_root(int value, tree_node_t *root)
 {
     algo_steps++;
@@ -137,7 +151,7 @@ tree_node_t *insert_avl_tree_node_recursive(int value, tree_node_t *node)
 
     _adjust_height(node);
 
-    return node;
+    return _balance(node);
 }
 
 /* Given a avl search tree and a value, this function
@@ -222,7 +236,7 @@ void avl_tree_pre_order_traversal_recursive(int *r, int *index,
         r[*index]=root->value;
         *index=*index+1;
         if (debug_print_travelsal_vals)
-            dbgval("%d", root->value);
+            dbgval("%d[%d] ", root->value, root->height);
         avl_tree_pre_order_traversal_recursive(r, index, root->left);
         avl_tree_pre_order_traversal_recursive(r, index, root->right);
     }
@@ -327,7 +341,7 @@ UTEST_F(ds, avltree_insert)
     insert_avl_tree_root(n[0], utest_fixture->root);
 
     for(int i=1; i<num_elements; i++)
-        insert_avl_tree_node_recursive(n[i], utest_fixture->root);
+         utest_fixture->root = insert_avl_tree_node_recursive(n[i], utest_fixture->root);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
