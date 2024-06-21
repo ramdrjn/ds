@@ -129,7 +129,7 @@ class tree:
     def delete(self, val):
         if self.root == None:
             return
-        self._delete(self.root, val)
+        self.root = self._delete(self.root, val)
     def _display_aux(self, node):
         """Returns list of strings, width, height, and horizontal coordinate of the root."""
         # No child.
