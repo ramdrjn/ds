@@ -82,22 +82,22 @@ static void _init_node(int value, tree_node_t *node)
 
 static int _maxof(int val1, int val2)
 {
-  if(val1 > val2)
-    return val1;
-  return val2;
+    if(val1 > val2)
+        return val1;
+    return val2;
 }
 
 static int _get_height(tree_node_t *node)
 {
-  if (!node)
-    return 0;
-  return node->height;
+    if (!node)
+        return 0;
+    return node->height;
 }
 
 static void _adjust_height(tree_node_t *node)
 {
-  node->height = 1 + _maxof(_get_height(node->left),
-                            _get_height(node->right));
+    node->height = 1 + _maxof(_get_height(node->left),
+                              _get_height(node->right));
 }
 
 void insert_avl_tree_root(int value, tree_node_t *root)
@@ -222,7 +222,7 @@ void avl_tree_pre_order_traversal_recursive(int *r, int *index,
         r[*index]=root->value;
         *index=*index+1;
         if (debug_print_travelsal_vals)
-          dbg("%d", root->value);
+            dbgval("%d", root->value);
         avl_tree_pre_order_traversal_recursive(r, index, root->left);
         avl_tree_pre_order_traversal_recursive(r, index, root->right);
     }
@@ -239,7 +239,7 @@ void avl_tree_post_order_traversal_recursive(int *r, int *index,
         r[*index]=root->value;
         *index=*index+1;
         if (debug_print_travelsal_vals)
-          dbg("%d", root->value);
+            dbgval("%d", root->value);
     }
 }
 
@@ -253,7 +253,7 @@ void avl_tree_in_order_traversal_recursive(int *r, int *index,
         r[*index]=root->value;
         *index=*index+1;
         if (debug_print_travelsal_vals)
-          dbg("%d", root->value);
+            dbgval("%d", root->value);
         avl_tree_in_order_traversal_recursive(r, index, root->right);
     }
 }
