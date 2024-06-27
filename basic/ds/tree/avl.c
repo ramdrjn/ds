@@ -107,10 +107,41 @@ static int _get_balance(tree_node_t *node)
     return (_get_height(node->left) - _get_height(node->right));
 }
 
+static tree_node_t* _rotate_right(tree_node_t *node)
+{
+    tree_node_t *t = node->left;
+    node->left = t->right;
+    t->right = node;
+    _adjust_height(node);
+    _adjust_height(t);
+    return t;
+}
+
+static tree_node_t* _rotate_left(tree_node_t *node)
+{
+    tree_node_t *t = node->right;
+    node->right = t->left;
+    t->left = node;
+    _adjust_height(node);
+    _adjust_height(t);
+    return t;
+}
+
 static tree_node_t* _balance(tree_node_t *node)
 {
     int bal = _get_balance(node);
-    dbg("val %d, balance %d", node->value, bal)
+    dbg("val %d, balance %d", node->value, bal);
+    if (bal > 1)
+    {
+        dbg("left heavy");
+        return _rotate_right(node);
+    }
+    else if (bal < -1)
+    {
+        dbg("right heavy");
+        return _rotate_left(node);
+    }
+
     return node;
 }
 
@@ -164,66 +195,66 @@ tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value)
     if (root->value > value)
     {
         root->left = delete_avl_tree_node_recursive(root->left, value);
-        return root;
     }
     else if (root->value < value)
     {
         root->right = delete_avl_tree_node_recursive(root->right, value);
-        return root;
     }
-
-    // We reach here when root is the node
-    // to be deleted.
-
-    // If one of the children is empty
-    if (root->left == NULL)
+    else
     {
-        tree_node_t* t = root->right;
-        MEM_FREE(root);
-        return t;
-    }
-    else if (root->right == NULL)
-    {
-        tree_node_t* t = root->left;
-        MEM_FREE(root);
-        return t;
-    }
-    else // If both children exist
-    {
-        //Two ways of selecting the successor.
-        //1. Inorder predecessor. Largest value from the left side.
-        //2. inorder successor. Smallest value from the right side.
+        // We reach here when root is the node
+        // to be deleted.
 
-        //This is the in order successor implementation.
-
-        tree_node_t* succParent = root;
-
-        // Find successor
-        tree_node_t* succ = root->right;
-        while (succ->left != NULL)
+        // If one of the children is empty
+        if (root->left == NULL)
         {
-            succParent = succ;
-            succ = succ->left;
+            tree_node_t* t = root->right;
+            MEM_FREE(root);
+            return t;
         }
+        else if (root->right == NULL)
+        {
+            tree_node_t* t = root->left;
+            MEM_FREE(root);
+            return t;
+        }
+        else // If both children exist
+        {
+            //Two ways of selecting the successor.
+            //1. Inorder predecessor. Largest value from the left side.
+            //2. inorder successor. Smallest value from the right side.
 
-        // Delete successor.  Since successor
-        // is always left child of its parent
-        // we can safely make successor's right
-        // right child as left of its parent.
-        // If there is no succ, then assign
-        // succ->right to succParent->right
-        if (succParent != root)
-            succParent->left = succ->right;
-        else
-            succParent->right = succ->right;
+            //This is the in order successor implementation.
 
-        // Copy Successor Data to root
-        root->value = succ->value;
+            tree_node_t* succParent = root;
 
-        // Delete Successor and return root
-        MEM_FREE(succ);
-        return root;
+            // Find successor
+            tree_node_t* succ = root->right;
+            while (succ->left != NULL)
+            {
+                succParent = succ;
+                succ = succ->left;
+            }
+
+            // Delete successor.  Since successor
+            // is always left child of its parent
+            // we can safely make successor's right
+            // right child as left of its parent.
+            // If there is no succ, then assign
+            // succ->right to succParent->right
+            if (succParent != root)
+                succParent->left = succ->right;
+            else
+                succParent->right = succ->right;
+
+            // Copy Successor Data to root
+            root->value = succ->value;
+
+            // Delete Successor and return root
+            MEM_FREE(succ);
+        }
     }
+    return _balance(root);
 }
 
 /* Depth first search */
@@ -329,6 +360,16 @@ UTEST_F_TEARDOWN(ds)
            1    5     8
             \  /    /   \
              2 4   7     9
+
+After left rotation (node 10):
+
+                   6
+              /        \
+             3          8
+            /  \       / \
+           1    5     7  10
+            \  /         /
+             2 4        9
  */
 UTEST_F(ds, avltree_insert)
 {
@@ -351,7 +392,7 @@ UTEST_F(ds, avltree_pre_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
-    int expected[10] = {6,3,1,2,5,4,10,8,7,9};
+    int expected[10] = {6,3,1,2,5,4,8,7,10,9};
     int index=0;
 
     algo_steps = 0;
@@ -369,7 +410,7 @@ UTEST_F(ds, avltree_post_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
-    int expected[10] = {2,1,4,5,3,7,9,8,10,6};
+    int expected[10] = {2,1,4,5,3,7,9,10,8,6};
     int index=0;
 
     algo_steps = 0;
@@ -401,164 +442,165 @@ UTEST_F(ds, avltree_in_order_traversal_recursive)
     algo_space_analysis(num_elements, "n");
 }
 
-/* /\* */
-/*                    6 */
-/*               /        \ */
-/*              3         10 */
-/*             /  \       / */
-/*            1    5     8 */
-/*             \  /    /   \ */
-/*              2 4   7     9 <- */
-/*  *\/ */
-/* UTEST_F(ds, avltree_delete_node_leaf) */
-/* { */
-/*     int num_elements=10; */
+/*
+                   6
+              /        \
+             3          8
+            /  \       / \
+           1    5     7  10
+            \  /         /
+             2 4        9 <-
+ */
+UTEST_F(ds, avltree_delete_node_leaf)
+{
+    int num_elements=10;
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     delete_avl_tree_node_recursive(utest_fixture->root, 9); */
+    delete_avl_tree_node_recursive(utest_fixture->root, 9);
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     algo_space_analysis(num_elements, "n"); */
-/* } */
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
 
-/* /\* */
-/*                    6 */
-/*               /        \ */
-/*              3         10 */
-/*             /  \       / */
-/*            1    5 <-  8 */
-/*             \  /    / */
-/*              2 4   7 */
-/*  *\/ */
-/* UTEST_F(ds, avltree_delete_node_1_child) */
-/* { */
-/*     int num_elements=10; */
+/*
+                   6
+              /        \
+             3          8
+            /  \       / \
+           1    5 <-  7  10
+            \  /
+             2 4
+ */
+UTEST_F(ds, avltree_delete_node_1_child)
+{
+    int num_elements=10;
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     delete_avl_tree_node_recursive(utest_fixture->root, 5); */
+    delete_avl_tree_node_recursive(utest_fixture->root, 5);
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     algo_space_analysis(num_elements, "n"); */
-/* } */
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
 
-/* /\* */
-/*                    6 */
-/*               /        \ */
-/*              3         10 */
-/*             /  \       / \ */
-/*            1    4     8  11 <- */
-/*             \        / */
-/*              2      7 */
-/*  *\/ */
-/* UTEST_F(ds, avltree_insert_after_delete) */
-/* { */
-/*     int num_elements=10; */
+/*
+                   6
+              /        \
+             3          8
+            /  \       / \
+           1    4     7  10
+            \             \
+             2             11 <-
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+ */
+UTEST_F(ds, avltree_insert_after_delete)
+{
+    int num_elements=10;
 
-/*     insert_avl_tree_node_recursive(11, utest_fixture->root); */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     algo_space_analysis(num_elements, "n"); */
-/* } */
+    insert_avl_tree_node_recursive(11, utest_fixture->root);
 
-/* /\* */
-/*                    6 <- */
-/*               /        \ */
-/*              3         10 */
-/*             /  \       / \ */
-/*            1    4     8  11 */
-/*             \        / */
-/*              2      7 */
-/*  *\/ */
-/* UTEST_F(ds, avltree_delete_node_2_child) */
-/* { */
-/*     int num_elements=10; */
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+/*
+                   6 <-
+              /        \
+             3          8
+            /  \       / \
+           1    4     7  10
+            \
+             2
+ */
+UTEST_F(ds, avltree_delete_node_2_child)
+{
+    int num_elements=10;
 
-/*     delete_avl_tree_node_recursive(utest_fixture->root, 6); */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     algo_space_analysis(num_elements, "n"); */
-/* } */
+    delete_avl_tree_node_recursive(utest_fixture->root, 6);
 
-/* /\* */
-/*                    7 */
-/*               /        \ */
-/*              3         10 */
-/*             /  \       / \ */
-/*            1    4     8  11 */
-/*             \ */
-/*              2 */
-/*  *\/ */
-/* UTEST_F(ds, avltree_in_order_traversal_recursive_after_delete_insert) */
-/* { */
-/*     int num_elements = 8; */
-/*     int r[8] = {0}; */
-/*     int expected[8] = {1,2,3,4,7,8,10,11}; */
-/*     int index=0; */
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+/*
+                   7
+              /        \
+             3         8
+            /  \        \
+           1    4       10
+            \
+             2
+ */
+UTEST_F(ds, avltree_in_order_traversal_recursive_after_delete_insert)
+{
+    int num_elements = 8;
+    int r[8] = {0};
+    int expected[8] = {1,2,3,4,7,8,10,11};
+    int index=0;
 
-/*     avl_tree_in_order_traversal_recursive(r, &index, utest_fixture->root); */
-/*     for(int i=0; i<num_elements; i++) */
-/*         EXPECT_EQ(r[i], expected[i]); */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     algo_space_analysis(num_elements, "n"); */
-/* } */
+    avl_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
+    for(int i=0; i<num_elements; i++)
+        EXPECT_EQ(r[i], expected[i]);
 
-/* //BST - avl search tree */
-/* /\* */
-/*                    7 */
-/*               /        \ */
-/*              3         10 */
-/*             /  \       / \ */
-/*            1    4     8  11 */
-/*             \ */
-/*              2 */
-/*  *\/ */
-/* UTEST_F(ds, avl_search_tree_search_found) */
-/* { */
-/*     int num_elements=8; */
-/*     int element = 10; */
-/*     int result; */
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+//BST - avl search tree
+/*
+                   7
+              /        \
+             3         8
+            /  \        \
+           1    4       10
+            \
+             2
+ */
+UTEST_F(ds, avl_search_tree_search_found)
+{
+    int num_elements=8;
+    int element = 10;
+    int result;
 
-/*     result = avl_search_tree_search(utest_fixture->root, element); */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     EXPECT_EQ(result, 1); */
+    result = avl_search_tree_search(utest_fixture->root, element);
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     //algo_space_analysis(num_elements, "1"); */
-/* } */
+    EXPECT_EQ(result, 1);
 
-/* UTEST_F(ds, avl_search_tree_search_no_found) */
-/* { */
-/*     int num_elements=8; */
-/*     int element = 12; */
-/*     int result; */
+    algo_time_analysis(num_elements, "n");
+    //algo_space_analysis(num_elements, "1");
+}
 
-/*     algo_steps = 0; */
-/*     algo_storage = 0; */
+UTEST_F(ds, avl_search_tree_search_no_found)
+{
+    int num_elements=8;
+    int element = 12;
+    int result;
 
-/*     result = avl_search_tree_search(utest_fixture->root, element); */
+    algo_steps = 0;
+    algo_storage = 0;
 
-/*     EXPECT_EQ(result, 0); */
+    result = avl_search_tree_search(utest_fixture->root, element);
 
-/*     algo_time_analysis(num_elements, "n"); */
-/*     //algo_space_analysis(num_elements, "1"); */
-/* } */
+    EXPECT_EQ(result, 0);
+
+    algo_time_analysis(num_elements, "n");
+    //algo_space_analysis(num_elements, "1");
+}
 
 //example run
 /*
