@@ -6,6 +6,9 @@ bool debug_print_travelsal_vals = true;
 
 typedef struct tree_node tree_node_t;
 
+void avl_tree_pre_order_traversal_recursive(int *r, int *index,
+                                            tree_node_t *root);
+
 struct tree_node
 {
     int value;
@@ -109,6 +112,7 @@ static int _get_balance(tree_node_t *node)
 
 static tree_node_t* _rotate_right(tree_node_t *node)
 {
+    dbg("rotate right on %d", node->value);
     tree_node_t *t = node->left;
     node->left = t->right;
     t->right = node;
@@ -119,6 +123,7 @@ static tree_node_t* _rotate_right(tree_node_t *node)
 
 static tree_node_t* _rotate_left(tree_node_t *node)
 {
+    dbg("rotate left on %d", node->value);
     tree_node_t *t = node->right;
     node->right = t->left;
     t->left = node;
@@ -133,13 +138,40 @@ static tree_node_t* _balance(tree_node_t *node)
     dbg("val %d, balance %d", node->value, bal);
     if (bal > 1)
     {
+        int index=0;
         dbg("left heavy");
-        return _rotate_right(node);
+        dbg("before: ");
+        avl_tree_pre_order_traversal_recursive(NULL, &index, node);
+        int bal1 = _get_balance(node->left);
+        dbg("left: val %d, balance %d", node->left->value, bal1);
+                
+        if (bal1 >= 0)
+        {
+            return _rotate_right(node);
+        }
+        else
+        {
+            node->left = _rotate_left(node->left);
+            return _rotate_right(node);
+        }
     }
     else if (bal < -1)
     {
+        int index=0;
         dbg("right heavy");
-        return _rotate_left(node);
+        dbg("before: ");
+        avl_tree_pre_order_traversal_recursive(NULL, &index, node);
+        int bal1 = _get_balance(node->right);
+        dbg("right: val %d, balance %d", node->right->value, bal1);
+        if (bal1 <= 0)
+        {
+            return _rotate_left(node);
+        }
+        else
+        {
+            node->right = _rotate_right(node->right);
+            return _rotate_left(node);
+        }
     }
 
     return node;
@@ -264,7 +296,8 @@ void avl_tree_pre_order_traversal_recursive(int *r, int *index,
     if(root)
     {
         algo_steps++;
-        r[*index]=root->value;
+        if (r)
+            r[*index]=root->value;
         *index=*index+1;
         if (debug_print_travelsal_vals)
             dbgval("%d[%d] ", root->value, root->height);
@@ -358,18 +391,25 @@ UTEST_F_TEARDOWN(ds)
              3         10
             /  \       /
            1    5     8
-            \  /    /   \
-             2 4   7     9
+            \  /       \
+             2 4        9
 
-After left rotation (node 10):
+After left-right rotation (node 10):
+                   6
+              /        \
+             3          9
+            /  \       / \
+           1    5     8  10
+            \  /
+             2 4
 
                    6
               /        \
-             3          8
+             3          9
             /  \       / \
-           1    5     7  10
-            \  /         /
-             2 4        9
+           1    5     8  10
+            \  /     /
+             2 4    7
  */
 UTEST_F(ds, avltree_insert)
 {
@@ -392,7 +432,7 @@ UTEST_F(ds, avltree_pre_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
-    int expected[10] = {6,3,1,2,5,4,8,7,10,9};
+    int expected[10] = {6,3,1,2,5,4,9,8,7,10};
     int index=0;
 
     algo_steps = 0;
@@ -410,7 +450,7 @@ UTEST_F(ds, avltree_post_order_traversal_recursive)
 {
     int num_elements = 10;
     int r[10] = {0};
-    int expected[10] = {2,1,4,5,3,7,9,10,8,6};
+    int expected[10] = {2,1,4,5,3,7,8,10,9,6};
     int index=0;
 
     algo_steps = 0;
@@ -445,11 +485,11 @@ UTEST_F(ds, avltree_in_order_traversal_recursive)
 /*
                    6
               /        \
-             3          8
+             3          9
             /  \       / \
-           1    5     7  10
-            \  /         /
-             2 4        9 <-
+           1    5     8  10
+            \  /     /
+             2 4    7<-
  */
 UTEST_F(ds, avltree_delete_node_leaf)
 {
@@ -458,7 +498,7 @@ UTEST_F(ds, avltree_delete_node_leaf)
     algo_steps = 0;
     algo_storage = 0;
 
-    delete_avl_tree_node_recursive(utest_fixture->root, 9);
+    delete_avl_tree_node_recursive(utest_fixture->root, 7);
 
     algo_time_analysis(num_elements, "n");
     algo_space_analysis(num_elements, "n");
@@ -467,9 +507,9 @@ UTEST_F(ds, avltree_delete_node_leaf)
 /*
                    6
               /        \
-             3          8
+             3          9
             /  \       / \
-           1    5 <-  7  10
+           1    5 <-  8  10
             \  /
              2 4
  */
@@ -489,12 +529,11 @@ UTEST_F(ds, avltree_delete_node_1_child)
 /*
                    6
               /        \
-             3          8
+             3          9
             /  \       / \
-           1    4     7  10
+           1    4     8  10
             \             \
              2             11 <-
-
  */
 UTEST_F(ds, avltree_insert_after_delete)
 {
@@ -509,14 +548,32 @@ UTEST_F(ds, avltree_insert_after_delete)
     algo_space_analysis(num_elements, "n");
 }
 
+UTEST_F(ds, avltree_pre_order_traversal_recursive_after_insert_after_deletes)
+{
+    int num_elements = 10;
+    int r[10] = {0};
+    int expected[10] = {6,3,1,2,4,9,8,10,11};
+    int index=0;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    avl_tree_pre_order_traversal_recursive(r, &index, utest_fixture->root);
+    for(int i=0; i<num_elements; i++)
+        EXPECT_EQ(r[i], expected[i]);
+
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
+
 /*
                    6 <-
               /        \
-             3          8
+             3          9
             /  \       / \
-           1    4     7  10
-            \
-             2
+           1    4     8  10
+            \             \
+             2             11
  */
 UTEST_F(ds, avltree_delete_node_2_child)
 {
@@ -532,19 +589,19 @@ UTEST_F(ds, avltree_delete_node_2_child)
 }
 
 /*
-                   7
-              /        \
-             3         8
+                   8
+              /       \
+             3         9
             /  \        \
            1    4       10
-            \
-             2
+            \            \
+             2           11
  */
-UTEST_F(ds, avltree_in_order_traversal_recursive_after_delete_insert)
+UTEST_F(ds, avltree_in_order_traversal_recursive_after_deletes_insert)
 {
     int num_elements = 8;
     int r[8] = {0};
-    int expected[8] = {1,2,3,4,7,8,10,11};
+    int expected[8] = {1,2,3,4,8,9,10,11};
     int index=0;
 
     algo_steps = 0;
@@ -558,15 +615,33 @@ UTEST_F(ds, avltree_in_order_traversal_recursive_after_delete_insert)
     algo_space_analysis(num_elements, "n");
 }
 
+UTEST_F(ds, avltree_pre_order_traversal_recursive_after_deletes_insert)
+{
+    int num_elements = 10;
+    int r[10] = {0};
+    int expected[10] = {8,3,1,2,4,9,10,11};
+    int index=0;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    avl_tree_pre_order_traversal_recursive(r, &index, utest_fixture->root);
+    for(int i=0; i<num_elements; i++)
+        EXPECT_EQ(r[i], expected[i]);
+
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
+
 //BST - avl search tree
 /*
-                   7
-              /        \
-             3         8
+                   8
+              /       \
+             3         9
             /  \        \
            1    4       10
-            \
-             2
+            \            \
+             2           11
  */
 UTEST_F(ds, avl_search_tree_search_found)
 {
@@ -600,6 +675,113 @@ UTEST_F(ds, avl_search_tree_search_no_found)
 
     algo_time_analysis(num_elements, "n");
     //algo_space_analysis(num_elements, "1");
+}
+
+/*
+                   8
+              /       \
+             3         9
+            /  \        \
+           1    4       10
+            \            \
+             2           11
+
+after right rotation (on node 8):
+
+                   7
+              /        \
+             3         10
+            /  \      /  \
+           1    4    8   11
+            \
+             2
+ */
+UTEST_F(ds, avltree_insert_after_delete_right_balance)
+{
+    int num_elements=10;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    insert_avl_tree_node_recursive(12, utest_fixture->root);
+
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
+
+/*
+                   7
+              /        \
+             3         10
+            /  \      /  \
+           1    4    8   11
+            \
+             2
+ */
+UTEST_F(ds, avltree_in_order_traversal_recursive_after_right_balance)
+{
+    int num_elements = 8;
+    int r[8] = {0};
+    int expected[8] = {1,2,3,4,7,8,10,11};
+    int index=0;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    avl_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
+    for(int i=0; i<num_elements; i++)
+        EXPECT_EQ(r[i], expected[i]);
+
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
+
+/*
+                   7
+              /        \
+             3         10
+            /  \      /  \
+           1    4<-  8   11
+            \
+             2
+ */
+UTEST_F(ds, avltree_delete_node_leaf_left_right_balance)
+{
+    int num_elements=10;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    delete_avl_tree_node_recursive(utest_fixture->root, 4);
+
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
+}
+
+/*
+                   7
+              /        \
+             2         10
+            /  \      /  \
+           1    3    8   11
+
+ */
+UTEST_F(ds, avltree_in_order_traversal_recursive_after_left_right_balance)
+{
+    int num_elements = 8;
+    int r[8] = {0};
+    int expected[8] = {1,2,3,7,8,10,11};
+    int index=0;
+
+    algo_steps = 0;
+    algo_storage = 0;
+
+    avl_tree_in_order_traversal_recursive(r, &index, utest_fixture->root);
+    for(int i=0; i<num_elements; i++)
+        EXPECT_EQ(r[i], expected[i]);
+
+    algo_time_analysis(num_elements, "n");
+    algo_space_analysis(num_elements, "n");
 }
 
 //example run
