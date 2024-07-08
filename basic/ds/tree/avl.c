@@ -144,7 +144,6 @@ static tree_node_t* _balance(tree_node_t *node)
         avl_tree_pre_order_traversal_recursive(NULL, &index, node);
         int bal1 = _get_balance(node->left);
         dbg("left: val %d, balance %d", node->left->value, bal1);
-                
         if (bal1 >= 0)
         {
             return _rotate_right(node);
@@ -217,6 +216,27 @@ tree_node_t *insert_avl_tree_node_recursive(int value, tree_node_t *node)
     return _balance(node);
 }
 
+tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value);
+
+static void _in_order_successor(tree_node_t* root)
+{
+    tree_node_t* succParent = root;
+
+    // Find successor
+    tree_node_t* succ = root->right;
+    while (succ->left != NULL)
+    {
+        succParent = succ;
+        succ = succ->left;
+    }
+
+    // Copy Successor Data to root
+    root->value = succ->value;
+
+    // Delete Successor.
+    delete_avl_tree_node_recursive(succParent, succ->value);
+}
+
 /* Given a avl search tree and a value, this function
    deletes the value and returns the new root */
 tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value)
@@ -257,33 +277,7 @@ tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value)
             //2. inorder successor. Smallest value from the right side.
 
             //This is the in order successor implementation.
-
-            tree_node_t* succParent = root;
-
-            // Find successor
-            tree_node_t* succ = root->right;
-            while (succ->left != NULL)
-            {
-                succParent = succ;
-                succ = succ->left;
-            }
-
-            // Delete successor.  Since successor
-            // is always left child of its parent
-            // we can safely make successor's right
-            // right child as left of its parent.
-            // If there is no succ, then assign
-            // succ->right to succParent->right
-            if (succParent != root)
-                succParent->left = succ->right;
-            else
-                succParent->right = succ->right;
-
-            // Copy Successor Data to root
-            root->value = succ->value;
-
-            // Delete Successor and return root
-            MEM_FREE(succ);
+            _in_order_successor(root);
         }
     }
     return _balance(root);
@@ -574,6 +568,22 @@ UTEST_F(ds, avltree_pre_order_traversal_recursive_after_insert_after_deletes)
            1    4     8  10
             \             \
              2             11
+After node deletion (node 6):
+                   8
+              /        \
+             3          9
+            /  \         \
+           1    4        10
+            \             \
+             2             11
+After left rotation (node 9):
+                     8
+                  /        \
+                 3          10
+                /  \       /  \
+               1    4     9   11
+                \
+                 2
  */
 UTEST_F(ds, avltree_delete_node_2_child)
 {
