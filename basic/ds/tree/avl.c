@@ -234,7 +234,7 @@ static void _in_order_successor(tree_node_t* root)
     root->value = succ->value;
 
     // Delete Successor.
-    delete_avl_tree_node_recursive(succParent, succ->value);
+    root->right = delete_avl_tree_node_recursive(succParent, succ->value);
 }
 
 /* Given a avl search tree and a value, this function
@@ -599,13 +599,13 @@ UTEST_F(ds, avltree_delete_node_2_child)
 }
 
 /*
-                   8
-              /       \
-             3         9
-            /  \        \
-           1    4       10
-            \            \
-             2           11
+                      8
+                  /        \
+                 3          10
+                /  \       /  \
+               1    4     9   11
+                \
+                 2
  */
 UTEST_F(ds, avltree_in_order_traversal_recursive_after_deletes_insert)
 {
@@ -629,7 +629,7 @@ UTEST_F(ds, avltree_pre_order_traversal_recursive_after_deletes_insert)
 {
     int num_elements = 10;
     int r[10] = {0};
-    int expected[10] = {8,3,1,2,4,9,10,11};
+    int expected[10] = {8,3,1,2,4,10,9,11};
     int index=0;
 
     algo_steps = 0;
@@ -645,13 +645,13 @@ UTEST_F(ds, avltree_pre_order_traversal_recursive_after_deletes_insert)
 
 //BST - avl search tree
 /*
-                   8
-              /       \
-             3         9
-            /  \        \
-           1    4       10
-            \            \
-             2           11
+                      8
+                  /        \
+                 3          10
+                /  \       /  \
+               1    4     9   11
+                \
+                 2
  */
 UTEST_F(ds, avl_search_tree_search_found)
 {
@@ -688,13 +688,13 @@ UTEST_F(ds, avl_search_tree_search_no_found)
 }
 
 /*
-                   8
-              /       \
-             3         9
-            /  \        \
-           1    4       10
-            \            \
-             2           11
+                      8
+                  /        \
+                 3          10
+                /  \       /  \
+               1    4     9   11
+                \
+                 2
 
 after right rotation (on node 8):
 
