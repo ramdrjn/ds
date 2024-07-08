@@ -176,6 +176,27 @@ static tree_node_t* _balance(tree_node_t *node)
     return node;
 }
 
+tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value);
+
+static void _in_order_successor(tree_node_t* root)
+{
+    tree_node_t* succParent = root;
+
+    // Find successor
+    tree_node_t* succ = root->right;
+    while (succ->left != NULL)
+    {
+        succParent = succ;
+        succ = succ->left;
+    }
+
+    // Copy Successor Data to root
+    root->value = succ->value;
+
+    // Delete Successor.
+    root->right = delete_avl_tree_node_recursive(succParent, succ->value);
+}
+
 void insert_avl_tree_root(int value, tree_node_t *root)
 {
     algo_steps++;
@@ -214,27 +235,6 @@ tree_node_t *insert_avl_tree_node_recursive(int value, tree_node_t *node)
     _adjust_height(node);
 
     return _balance(node);
-}
-
-tree_node_t* delete_avl_tree_node_recursive(tree_node_t* root, int value);
-
-static void _in_order_successor(tree_node_t* root)
-{
-    tree_node_t* succParent = root;
-
-    // Find successor
-    tree_node_t* succ = root->right;
-    while (succ->left != NULL)
-    {
-        succParent = succ;
-        succ = succ->left;
-    }
-
-    // Copy Successor Data to root
-    root->value = succ->value;
-
-    // Delete Successor.
-    root->right = delete_avl_tree_node_recursive(succParent, succ->value);
 }
 
 /* Given a avl search tree and a value, this function
